@@ -1,12 +1,24 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { HiOutlineViewGrid, HiOutlinePuzzle, HiOutlineDocumentText, HiOutlineCog, HiOutlineSearch } from 'react-icons/hi';
 
 const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [search, setSearch] = useState('');
   const [mobileMenu, setMobileMenu] = useState(false);
+
+  // Close dropdowns when mobile menu closes
+  useEffect(() => {
+    if (!mobileMenu) setOpenDropdown(null);
+  }, [mobileMenu]);
+
+  // Close dropdowns and mobile menu on route change
+  const location = useLocation();
+  useEffect(() => {
+    setOpenDropdown(null);
+    setMobileMenu(false);
+  }, [location.pathname]);
   const postsDropdownRef = useRef();
   const toolsDropdownRef = useRef();
   const navigate = useNavigate();
@@ -86,7 +98,7 @@ const Header = () => {
           </div>
         </nav>
         {/* Mobile menu icon */}
-        <button className="lg:hidden flex items-center justify-center p-2 rounded-md text-gray-700 hover:bg-gray-200 focus:outline-none" onClick={() => setMobileMenu(!mobileMenu)} aria-label="Open menu">
+        <button className="lg:hidden flex items-center justify-center p-2 rounded-md text-gray-700 hover:bg-gray-200 focus:outline-none" onClick={() => setMobileMenu((prev) => !prev)} aria-label="Open menu">
           <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -98,22 +110,70 @@ const Header = () => {
           <div className="flex flex-col gap-2 pt-4">
             <NavLink to="/apps" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-2 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 transition flex items-center gap-2'} onClick={() => setMobileMenu(false)}><HiOutlineViewGrid size={20}/> Apps</NavLink>
             <NavLink to="/games" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-2 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 transition flex items-center gap-2'} onClick={() => setMobileMenu(false)}><HiOutlinePuzzle size={20}/> Games</NavLink>
-            <button onClick={() => setOpenDropdown(openDropdown === 'posts' ? null : 'posts')} className="hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 flex items-center gap-2 transition focus:outline-none">
+            <button
+              onClick={() => setOpenDropdown(openDropdown === 'posts' ? null : 'posts')}
+              className="hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 flex items-center gap-2 transition focus:outline-none"
+              type="button"
+              aria-expanded={openDropdown === 'posts'}
+              aria-controls="mobile-posts-dropdown"
+            >
               <HiOutlineDocumentText size={20}/> Posts <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
             </button>
             {openDropdown === 'posts' && (
-              <div className="ml-4 flex flex-col gap-1">
-                <NavLink to="/posts/topics" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2" onClick={() => { setOpenDropdown(null); setMobileMenu(false); }}><HiOutlineDocumentText size={18}/> Topics</NavLink>
-                <NavLink to="/posts/blogs" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2" onClick={() => { setOpenDropdown(null); setMobileMenu(false); }}><HiOutlineDocumentText size={18}/> Blogs</NavLink>
+              <div id="mobile-posts-dropdown" className="ml-4 flex flex-col gap-1">
+                <NavLink
+                  to="/posts/topics"
+                  className="block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"
+                  onClick={() => {
+                    setOpenDropdown(null);
+                    setMobileMenu(false);
+                  }}
+                >
+                  <HiOutlineDocumentText size={18}/> Topics
+                </NavLink>
+                <NavLink
+                  to="/posts/blogs"
+                  className="block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"
+                  onClick={() => {
+                    setOpenDropdown(null);
+                    setMobileMenu(false);
+                  }}
+                >
+                  <HiOutlineDocumentText size={18}/> Blogs
+                </NavLink>
               </div>
             )}
-            <button onClick={() => setOpenDropdown(openDropdown === 'tools' ? null : 'tools')} className="hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 flex items-center gap-2 transition focus:outline-none">
+            <button
+              onClick={() => setOpenDropdown(openDropdown === 'tools' ? null : 'tools')}
+              className="hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 flex items-center gap-2 transition focus:outline-none"
+              type="button"
+              aria-expanded={openDropdown === 'tools'}
+              aria-controls="mobile-tools-dropdown"
+            >
               <HiOutlineCog size={20}/> Tools <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
             </button>
             {openDropdown === 'tools' && (
-              <div className="ml-4 flex flex-col gap-1">
-                <NavLink to="/tools/zip-unzip" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2" onClick={() => { setOpenDropdown(null); setMobileMenu(false); }}><HiOutlineCog size={18}/> Zip & Unzip</NavLink>
-                <NavLink to="/tools/qr-tool" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2" onClick={() => { setOpenDropdown(null); setMobileMenu(false); }}><HiOutlineCog size={18}/> QR Code Tool</NavLink>
+              <div id="mobile-tools-dropdown" className="ml-4 flex flex-col gap-1">
+                <NavLink
+                  to="/tools/zip-unzip"
+                  className="block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"
+                  onClick={() => {
+                    setOpenDropdown(null);
+                    setMobileMenu(false);
+                  }}
+                >
+                  <HiOutlineCog size={18}/> Zip & Unzip
+                </NavLink>
+                <NavLink
+                  to="/tools/qr-tool"
+                  className="block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"
+                  onClick={() => {
+                    setOpenDropdown(null);
+                    setMobileMenu(false);
+                  }}
+                >
+                  <HiOutlineCog size={18}/> QR Code Tool
+                </NavLink>
               </div>
             )}
           </div>
