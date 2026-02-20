@@ -7,16 +7,21 @@ import PopularDesktopSoftwares from "../components/PopularDesktopSoftwares";
 import FinanceAppsSection from "../components/FinanceAppsSection";
 import EntertainmentAppsSection from "../components/EntertainmentAppsSection";
 import ToolsAppsSection from "../components/ToolsAppsSection";
+import AppCard from '../components/AppCard';
+import { useGetAppsQuery } from '../services/api';
 
 const HomePage = () => {
+    const { data: apps = [], isLoading } = useGetAppsQuery();
+
+    // Example: show first 6 apps
+    const homeApps = apps.slice(0, 6);
+
     return (
         <>
             <HeroSection />
             <div className="my-8">
                 <AdsSection />
             </div>
-
-
 
             <TopFreeAppsList />
             <div className="my-8">

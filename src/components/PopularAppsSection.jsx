@@ -1,33 +1,35 @@
 import React from "react";
-import { popularApps } from "../data/topicsData";
+import { FaStar } from "react-icons/fa";
+import { useGetAppsQuery } from "../services/api";
+import AppCard from "./AppCard";
+import { Link } from "react-router-dom";
 
-const PopularAppsSection = () => (
-  <section className="w-full max-w-6xl mx-auto mt-10 mb-8 px-4">
-    <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-900">Popular Apps</h2>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {popularApps.map((app, idx) => (
-        <div
-          key={app.id}
-          className="bg-white rounded-2xl shadow-md p-4 hover:shadow-xl transition border border-gray-100"
+const PopularAppsSection = () => {
+  const { data: apps = [], isLoading } = useGetAppsQuery();
+
+  // Filter apps for popular category
+  const popularApps = apps.filter((app) => (app.category || "").toLowerCase().includes("popular"));
+
+  return (
+    <section className="w-full max-w-6xl mx-auto mt-10 mb-8 px-4">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Popular Apps</h2>
+        <Link
+          to="/apps/popular"
+          className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-5 py-2 rounded-lg font-bold shadow hover:scale-105 transition"
         >
-          <div className="flex items-center gap-4">
-            <div className="flex-1 min-w-0">
-              <span className="font-semibold text-lg text-gray-800 truncate block mb-1">
-                {idx + 1}. {app.name}
-              </span>
-              <span className="inline-block px-2 py-0.5 text-xs rounded bg-blue-100 text-blue-700 font-medium mb-2">
-                {app.category}
-              </span>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-yellow-500 font-bold text-base">★</span>
-                <span className="text-gray-700 text-sm font-medium">{app.rating}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </section>
-);
+          Show All
+        </Link>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {isLoading ? (
+          <div className="col-span-3 text-center text-gray-500">Loading...</div>
+        ) : popularApps.map((app, idx) => (
+          <AppCard key={app._id} app={app} idx={idx} />
+        ))}
+      </div>
+    </section>
+  );
+};
 
 export default PopularAppsSection;

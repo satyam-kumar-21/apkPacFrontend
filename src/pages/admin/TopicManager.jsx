@@ -1,3 +1,4 @@
+import React from 'react';
 // TODO: Implement CRUD for Topics with image upload and React Quill
 const TopicManager = () => {
   return (

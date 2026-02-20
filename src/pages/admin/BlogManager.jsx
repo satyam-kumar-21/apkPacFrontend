@@ -1,3 +1,4 @@
+import React from 'react';
 // TODO: Implement CRUD for Blogs with image upload and React Quill
 const BlogManager = () => {
   return (
