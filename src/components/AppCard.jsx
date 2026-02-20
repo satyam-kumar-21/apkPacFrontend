@@ -13,7 +13,7 @@ const AppCard = ({ app, idx }) => {
   // Slugify app name for details page
   const slug = app.name ? app.name.toLowerCase().replace(/\s+/g, '-') : '';
   return (
-    <Link to={`/apps/${encodeURIComponent(slug)}`} className="block group" style={{ textDecoration: 'none' }}>
+    <Link to={`/app/${encodeURIComponent(slug)}`} className="block group" style={{ textDecoration: 'none' }}>
       <div className="bg-white rounded-2xl shadow-md p-4 hover:shadow-xl transition border border-gray-100 group-hover:border-indigo-400">
         <div className="flex items-center gap-4">
           <img src={app.icon} alt={app.name} className="w-14 h-14 rounded-xl object-cover border border-gray-200 bg-gray-100" loading="lazy" />

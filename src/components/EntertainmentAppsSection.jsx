@@ -6,8 +6,17 @@ import { useGetAppsQuery } from "../services/api";
 
 const EntertainmentAppsSection = () => {
   const { data: apps = [], isLoading } = useGetAppsQuery();
-  // Filter apps for entertainment category
-  const entertainmentApps = apps.filter((app) => (app.category || "").toLowerCase().includes("entertainment"));
+  // Filter apps for description1 category 'Entertainment'
+  const entertainmentApps = apps.filter((app) => {
+    if (app.description1) {
+      const match = app.description1.match(/<td[^>]*>\s*Category\s*<\/td>\s*<td[^>]*>(.*?)<\/td>/i);
+      if (match && match[1].toLowerCase() === "entertainment") {
+        return true;
+      }
+    }
+    return false;
+  });
+  const showApps = entertainmentApps.slice(0, 9);
 
   return (
     <section className="w-full max-w-6xl mx-auto mt-10 mb-8 px-4">
@@ -23,7 +32,7 @@ const EntertainmentAppsSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {isLoading ? (
           <div className="col-span-3 text-center text-gray-500">Loading...</div>
-        ) : entertainmentApps.map((app, idx) => (
+        ) : showApps.map((app, idx) => (
           <AppCard key={app._id} app={app} idx={idx} />
         ))}
       </div>

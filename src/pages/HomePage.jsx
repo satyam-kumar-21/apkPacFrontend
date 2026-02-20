@@ -10,6 +10,7 @@ import EntertainmentAppsSection from "../components/EntertainmentAppsSection";
 import ToolsAppsSection from "../components/ToolsAppsSection";
 import AppCard from '../components/AppCard';
 import { useGetAppsQuery } from '../services/api';
+import ProductivityAppsSection from "../components/ProductivityAppsSection";
 
 const HomePage = () => {
     const { data: apps = [], isLoading } = useGetAppsQuery();
@@ -52,6 +53,12 @@ const HomePage = () => {
                 <AdsSection />
             </div>
             <ToolsAppsSection />
+
+            <div className="my-8">
+                <AdsSection />
+            </div>
+
+             <ProductivityAppsSection />
 
             <div className="my-8">
                 <AdsSection />

@@ -22,10 +22,13 @@ import AboutUs from './pages/AboutUs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import Disclaimer from './pages/Disclaimer';
+import CookiePolicy from './pages/CookiePolicy';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import TopAppsPage from './pages/TopAppsPage';
 import FinanceAppsPage from './pages/FinanceAppsPage';
+import DesktopAppsPage from './pages/DesktopAppsPage';
+import AllAppsPage from './pages/AllAppsPage';
 
 function App() {
   return (
@@ -49,8 +52,10 @@ function DefaultLayout() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/apps" element={<AppsPage />} />
-          <Route path="/apps/:id" element={<AppDetailsPage />} />
+          <Route path="/app/:id" element={<AppDetailsPage />} />
+          <Route path="/apps/:slug" element={<AllAppsPage />} />
           <Route path="/apps/top-apps" element={<TopAppsPage />} />
+          <Route path="/apps/desktop" element={<DesktopAppsPage />} />
           <Route path="/apps/finance" element={<FinanceAppsPage />} />
           <Route path="/games" element={<GamesPage />} />
           <Route path="/posts/topics" element={<TopicsPage />} />
@@ -62,6 +67,7 @@ function DefaultLayout() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
         </Routes>

@@ -30,7 +30,7 @@ const TopFreeAppsList = () => {
           }
           return (
             <Link
-              to={`/apps/${encodeURIComponent(app.name.toLowerCase().replace(/\s+/g, '-'))}`}
+              to={`/app/${encodeURIComponent(app.name.toLowerCase().replace(/\s+/g, '-'))}`}
               key={app._id}
               className="flex items-center gap-4 bg-white rounded-2xl shadow-md p-4 hover:shadow-xl transition group border border-gray-100 cursor-pointer no-underline"
               style={{ textDecoration: 'none' }}

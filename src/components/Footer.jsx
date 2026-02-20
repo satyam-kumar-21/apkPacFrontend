@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaGithub } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Footer = () => (
   <footer className="bg-gradient-to-t from-gray-100 to-white border-t mt-12 pt-8 pb-4 text-gray-700">
@@ -10,10 +11,11 @@ const Footer = () => (
         <span className="text-sm">&copy; {new Date().getFullYear()} APKPAC. All rights reserved.</span>
       </div>
       <nav className="flex flex-wrap justify-center gap-4 text-sm font-medium">
-        <a href="/about-us" className="hover:text-blue-700 transition">About Us</a>
-        <a href="/privacy-policy" className="hover:text-blue-700 transition">Privacy Policy</a>
-        <a href="/terms-of-service" className="hover:text-blue-700 transition">Terms of Service</a>
-        <a href="/disclaimer" className="hover:text-blue-700 transition">Disclaimer</a>
+        <Link to="/about-us" className="hover:text-blue-700 transition">About Us</Link>
+        <Link to="/privacy-policy" className="hover:text-blue-700 transition">Privacy Policy</Link>
+        <Link to="/cookie-policy" className="hover:text-blue-700 transition">Cookie Policy</Link>
+        <Link to="/terms-of-service" className="hover:text-blue-700 transition">Terms of Service</Link>
+        <Link to="/disclaimer" className="hover:text-blue-700 transition">Disclaimer</Link>
       </nav>
       <div className="flex justify-center gap-4 text-xl mt-2 md:mt-0">
         <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-700 transition"><FaFacebook /></a>

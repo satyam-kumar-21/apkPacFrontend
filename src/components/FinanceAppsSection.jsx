@@ -5,9 +5,9 @@ import AppCard from "./AppCard";
 
 const FinanceAppsSection = () => {
   const { data: apps = [], isLoading } = useGetAppsQuery();
-
   // Filter apps for finance category
   const financeApps = apps.filter((app) => (app.category || "").toLowerCase().includes("finance"));
+  const showApps = financeApps.slice(0, 9);
 
   return (
     <section className="w-full max-w-6xl mx-auto mt-10 mb-8 px-4">
@@ -23,15 +23,8 @@ const FinanceAppsSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {isLoading ? (
           <div className="col-span-3 text-center text-gray-500">Loading...</div>
-        ) : financeApps.map((app, idx) => (
-          <Link
-            to={`/apps/${encodeURIComponent(app.name.toLowerCase().replace(/\s+/g, '-'))}`}
-            key={app._id}
-            className="no-underline"
-            style={{ textDecoration: "none" }}
-          >
-            <AppCard app={app} idx={idx} />
-          </Link>
+        ) : showApps.map((app, idx) => (
+          <AppCard app={app} idx={idx} key={app._id} />
         ))}
       </div>
     </section>
