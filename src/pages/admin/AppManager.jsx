@@ -31,6 +31,8 @@ const AppManager = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const appsPerPage = 20;
 
   useEffect(() => {
     fetchApps();
@@ -177,6 +179,14 @@ const AppManager = () => {
     (app.category && app.category.toLowerCase().includes(search.toLowerCase()))
   );
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredApps.length / appsPerPage);
+  const paginatedApps = filteredApps.slice((currentPage - 1) * appsPerPage, currentPage * appsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <div className="flex justify-between items-center mb-6">
@@ -208,7 +218,7 @@ const AppManager = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredApps.map(app => (
+            {paginatedApps.map(app => (
               <tr key={app._id} className="border-b hover:bg-indigo-50">
                 <td className="p-2"><img src={app.icon} alt="icon" className="w-10 h-10 rounded" /></td>
                 <td className="p-2 font-bold">{app.name}</td>
@@ -249,6 +259,35 @@ const AppManager = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-4">
+          <button
+            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 font-bold"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i + 1}
+              className={`px-3 py-1 rounded font-bold ${currentPage === i + 1 ? 'bg-indigo-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 font-bold"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       {/* Add App Modal */}
       {showModal && (

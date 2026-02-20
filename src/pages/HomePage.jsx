@@ -3,6 +3,7 @@ import HeroSection from "../components/HeroSection";
 import TopFreeAppsList from "../components/TopFreeAppsList";
 import AdsSection from "../components/AdsSection";
 import PopularGamesSection from "../components/PopularGamesSection";
+import PopularAppsSection from "../components/PopularAppsSection";
 import PopularDesktopSoftwares from "../components/PopularDesktopSoftwares";
 import FinanceAppsSection from "../components/FinanceAppsSection";
 import EntertainmentAppsSection from "../components/EntertainmentAppsSection";
@@ -29,6 +30,10 @@ const HomePage = () => {
             </div>
 
             <PopularGamesSection />
+            <div className="my-8">
+                <AdsSection />
+            </div>
+            <PopularAppsSection />
             <div className="my-8">
                 <AdsSection />
             </div>
