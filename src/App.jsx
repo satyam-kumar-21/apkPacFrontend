@@ -23,6 +23,10 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import Disclaimer from './pages/Disclaimer';
 import CookiePolicy from './pages/CookiePolicy';
+import ContactUs from './pages/ContactUs';
+import AccessibilityStatement from './pages/AccessibilityStatement';
+import DmcaPolicy from './pages/DmcaPolicy';
+import EditorialTransparency from './pages/EditorialTransparency';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import TopAppsPage from './pages/TopAppsPage';
@@ -66,10 +70,14 @@ function DefaultLayout() {
           <Route path="/tools/qr-tool" element={<QRToolPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/cookie-policy" element={<CookiePolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/accessibility-statement" element={<AccessibilityStatement />} />
+          <Route path="/dmca-policy" element={<DmcaPolicy />} />
+          <Route path="/editorial-transparency" element={<EditorialTransparency />} />
         </Routes>
       </main>
       <Footer />

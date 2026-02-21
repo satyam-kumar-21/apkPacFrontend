@@ -9,29 +9,37 @@ const ContactUs = () => (
     <section className="mb-6">
       <h2 className="text-xl font-semibold mb-2">📩 Contact Form</h2>
       <p>If you prefer a quick and convenient way to reach us, please submit your details through our professional contact form:</p>
-      <form className="bg-gray-50 rounded-lg p-4 shadow-md mt-4">
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Full Name</label>
-          <input type="text" className="w-full border rounded px-3 py-2" placeholder="Enter your full name" required />
+      <form className="bg-white rounded-2xl shadow-lg mt-6 p-0 overflow-hidden border border-gray-200 max-w-2xl mx-auto">
+        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-4 flex items-center gap-3">
+          <span className="text-2xl">📩</span>
+          <span className="text-lg font-semibold">Contact Form</span>
         </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Email Address</label>
-          <input type="email" className="w-full border rounded px-3 py-2" placeholder="Your email address" required />
+        <div className="px-6 py-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block font-semibold mb-2 text-gray-700">Full Name</label>
+            <input type="text" className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 transition" placeholder="Enter your full name" required />
+          </div>
+          <div>
+            <label className="block font-semibold mb-2 text-gray-700">Email Address</label>
+            <input type="email" className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 transition" placeholder="Your email address" required />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block font-semibold mb-2 text-gray-700">Subject</label>
+            <input type="text" className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 transition" placeholder="Subject" required />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block font-semibold mb-2 text-gray-700">Message</label>
+            <textarea className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 transition" rows={5} placeholder="Describe your question or concern" required></textarea>
+          </div>
+          <div className="md:col-span-2">
+            <label className="block font-semibold mb-2 text-gray-700">Attachment (Optional)</label>
+            <input type="file" className="w-full border border-gray-300 rounded-lg px-4 py-2" />
+          </div>
         </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Subject</label>
-          <input type="text" className="w-full border rounded px-3 py-2" placeholder="Subject" required />
+        <div className="px-6 pb-6 flex flex-col items-center">
+          <button type="submit" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold shadow-md hover:scale-105 transition">Send Message</button>
+          <p className="text-xs text-gray-500 mt-2">Your request will be reviewed within 1–2 business days.</p>
         </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Message</label>
-          <textarea className="w-full border rounded px-3 py-2" rows={4} placeholder="Describe your question or concern" required></textarea>
-        </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-1">Attachment (Optional)</label>
-          <input type="file" className="w-full" />
-        </div>
-        <button type="submit" className="bg-indigo-600 text-white px-6 py-2 rounded font-semibold">Send Message</button>
-        <p className="text-xs text-gray-500 mt-2">Your request will be reviewed within 1–2 business days.</p>
       </form>
     </section>
     <section className="mb-6">

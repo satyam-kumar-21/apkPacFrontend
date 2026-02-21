@@ -72,7 +72,9 @@ const Header = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between py-3 px-4">
         {/* Left: Logo */}
         <div className="flex items-center gap-2 md:gap-4">
-          <Link to="/" className="font-extrabold text-2xl md:text-3xl tracking-tight text-gray-900 px-2 py-1 rounded-xl hover:scale-105 transition-transform">APKPAC</Link>
+          <Link to="/" className="flex items-center">
+            <img src="/smartAppInfoLogo.png" alt="SmartAppInfo.com Logo" className="h-14 w-auto" />
+          </Link>
         </div>
         {/* Center: Search */}
         <form onSubmit={handleSearch} className="flex-1 flex justify-center mx-2">
