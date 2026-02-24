@@ -18,7 +18,7 @@ const AdminLogin = () => {
         { email, password }
       );
 
-      console.log(res.data);
+      // ...existing code...
 
       if (res.data.token) {
         localStorage.setItem('apkpac_admin_token', res.data.token);
