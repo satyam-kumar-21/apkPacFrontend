@@ -270,15 +270,45 @@ const AppManager = () => {
           >
             Prev
           </button>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i + 1}
-              className={`px-3 py-1 rounded font-bold ${currentPage === i + 1 ? 'bg-indigo-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
-              onClick={() => handlePageChange(i + 1)}
-            >
-              {i + 1}
-            </button>
-          ))}
+          {/* Pagination with max 15 page buttons, then ... and next set */}
+          {(() => {
+            const maxPages = 15;
+            let start = 1;
+            let end = Math.min(totalPages, maxPages);
+            // If currentPage is past the first set, shift window
+            if (currentPage > maxPages) {
+              start = Math.floor((currentPage - 1) / maxPages) * maxPages + 1;
+              end = Math.min(start + maxPages - 1, totalPages);
+            }
+            const pageButtons = [];
+            for (let i = start; i <= end; i++) {
+              pageButtons.push(
+                <button
+                  key={i}
+                  className={`px-3 py-1 rounded font-bold ${currentPage === i ? 'bg-indigo-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                  onClick={() => handlePageChange(i)}
+                >
+                  {i}
+                </button>
+              );
+            }
+            return (
+              <>
+                {pageButtons}
+                {end < totalPages && (
+                  <>
+                    <span className="px-2">...</span>
+                    <button
+                      className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 font-bold"
+                      onClick={() => handlePageChange(end + 1)}
+                    >
+                      Next
+                    </button>
+                  </>
+                )}
+              </>
+            );
+          })()}
           <button
             className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 font-bold"
             onClick={() => handlePageChange(currentPage + 1)}
