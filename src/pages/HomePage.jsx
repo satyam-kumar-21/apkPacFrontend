@@ -7,6 +7,7 @@ import PopularAppsSection from "../components/PopularAppsSection";
 import PopularDesktopSoftwares from "../components/PopularDesktopSoftwares";
 import FinanceAppsSection from "../components/FinanceAppsSection";
 import EntertainmentAppsSection from "../components/EntertainmentAppsSection";
+import CommunicationAppsSection from "../components/CommunicationAppsSection";
 import ToolsAppsSection from "../components/ToolsAppsSection";
 import AppCard from '../components/AppCard';
 import { useGetAppsQuery } from '../services/api';
@@ -49,6 +50,12 @@ const HomePage = () => {
                 <AdsSection />
             </div>
             <EntertainmentAppsSection />
+
+            <div className="my-8">
+                <AdsSection />
+            </div>
+            
+            <CommunicationAppsSection />
             <div className="my-8">
                 <AdsSection />
             </div>
@@ -58,7 +65,7 @@ const HomePage = () => {
                 <AdsSection />
             </div>
 
-             <ProductivityAppsSection />
+            <ProductivityAppsSection />
 
             <div className="my-8">
                 <AdsSection />

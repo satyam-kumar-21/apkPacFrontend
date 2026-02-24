@@ -13,7 +13,15 @@ import { BsGraphUp } from "react-icons/bs";
 
 const AdminDashboard = () => {
   const token = localStorage.getItem("apkpac_admin_token");
-  if (!token) return <Navigate to="/admin/login" />;
+  if (!token) {
+    return <Navigate to="/admin/login" replace />;
+  }
+
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem('apkpac_admin_token');
+    window.location.href = '/admin/login';
+  };
 
   const [time, setTime] = useState(new Date());
 
@@ -181,7 +189,16 @@ const AdminDashboard = () => {
 
   return (
     <div className="container mx-auto py-6">
-     
+      {/* Admin Panel Header with Logout */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-indigo-700">Admin Panel</h1>
+        <button
+          onClick={handleLogout}
+          className="bg-red-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-red-700 transition"
+        >
+          Logout
+        </button>
+      </div>
 
       <Routes>
         <Route index element={<DashboardHome />} />

@@ -1,3 +1,8 @@
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem('apkpac_admin_token');
+    navigate('/admin/login');
+  };
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useGetAppsQuery } from '../services/api';
@@ -9,6 +14,8 @@ const Header = () => {
   const [search, setSearch] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const { data: apps = [] } = useGetAppsQuery();
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
   const searchResults = search.trim()
     ? apps.filter(app => {
         const keyword = search.toLowerCase();
@@ -32,7 +39,6 @@ const Header = () => {
   }, [mobileMenu]);
 
   // Close dropdowns and mobile menu on route change
-  const location = useLocation();
   useEffect(() => {
     setOpenDropdown(null);
     setMobileMenu(false);
@@ -124,6 +130,12 @@ const Header = () => {
         </form>
         {/* Right: Nav */}
         <nav className="hidden lg:flex gap-2 xl:gap-6 items-center text-gray-800 font-semibold text-base md:text-lg">
+                    {/* Show logout only on admin routes if admin token exists */}
+                    {isAdminRoute && localStorage.getItem('apkpac_admin_token') && (
+                      <button onClick={handleLogout} className="bg-red-600 text-white px-4 py-2 rounded-xl ml-4 font-bold hover:bg-red-700 transition">
+                        Logout
+                      </button>
+                    )}
           <NavLink to="/apps" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-1 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-1 transition flex items-center gap-2'}><HiOutlineViewGrid size={20}/> Apps</NavLink>
           <NavLink to="/games" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-1 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-1 transition flex items-center gap-2'}><HiOutlinePuzzle size={20}/> Games</NavLink>
           <div className="relative" ref={postsDropdownRef}>
