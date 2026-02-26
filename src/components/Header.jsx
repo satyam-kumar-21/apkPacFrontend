@@ -43,6 +43,24 @@ const Header = () => {
     setOpenDropdown(null);
     setMobileMenu(false);
   }, [location.pathname]);
+
+  // Close mobile dropdowns on outside click (mobile only)
+  useEffect(() => {
+    if (!mobileMenu) return;
+    const handleClick = (e) => {
+      const postsBtn = document.getElementById('mobile-posts-btn');
+      const postsDropdown = document.getElementById('mobile-posts-dropdown');
+      if (
+        openDropdown === 'posts' &&
+        postsBtn && !postsBtn.contains(e.target) &&
+        postsDropdown && !postsDropdown.contains(e.target)
+      ) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [openDropdown, mobileMenu]);
   const postsDropdownRef = useRef();
   const toolsDropdownRef = useRef();
   const navigate = useNavigate();
@@ -175,6 +193,7 @@ const Header = () => {
             <NavLink to="/apps" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-2 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 transition flex items-center gap-2'} onClick={() => setMobileMenu(false)}><HiOutlineViewGrid size={20}/> Apps</NavLink>
             <NavLink to="/games" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-2 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 transition flex items-center gap-2'} onClick={() => setMobileMenu(false)}><HiOutlinePuzzle size={20}/> Games</NavLink>
             <button
+              id="mobile-posts-btn"
               onClick={() => setOpenDropdown(openDropdown === 'posts' ? null : 'posts')}
               className="hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 flex items-center gap-2 transition focus:outline-none"
               type="button"
