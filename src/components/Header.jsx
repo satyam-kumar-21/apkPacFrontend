@@ -162,8 +162,8 @@ const Header = () => {
             </button>
             {openDropdown === 'posts' && (
               <div className="absolute right-0 mt-2 w-40 bg-white/95 text-blue-900 border border-blue-100 rounded-xl shadow-xl animate-fade-in z-50 backdrop-blur">
-                <NavLink to="/posts/topics" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2" onClick={() => setOpenDropdown(null)}><HiOutlineDocumentText size={18}/> Topics</NavLink>
-                <NavLink to="/posts/blogs" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2" onClick={() => setOpenDropdown(null)}><HiOutlineDocumentText size={18}/> Blogs</NavLink>
+                <Link to="/posts/topics" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"><HiOutlineDocumentText size={18}/> Topics</Link>
+                <Link to="/posts/blogs" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"><HiOutlineDocumentText size={18}/> Blogs</Link>
               </div>
             )}
           </div>
@@ -206,21 +206,21 @@ const Header = () => {
               <div id="mobile-posts-dropdown" className="ml-4 flex flex-col gap-1">
                 <NavLink
                   to="/posts/topics"
-                  className="block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"
-                  onClick={() => {
-                    setOpenDropdown(null);
-                    setMobileMenu(false);
-                  }}
+                  className={({isActive}) =>
+                    (isActive ? 'bg-gray-200 text-blue-700 ' : '') +
+                    'block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2'
+                  }
+                  onClick={() => setMobileMenu(false)}
                 >
                   <HiOutlineDocumentText size={18}/> Topics
                 </NavLink>
                 <NavLink
                   to="/posts/blogs"
-                  className="block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"
-                  onClick={() => {
-                    setOpenDropdown(null);
-                    setMobileMenu(false);
-                  }}
+                  className={({isActive}) =>
+                    (isActive ? 'bg-gray-200 text-blue-700 ' : '') +
+                    'block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2'
+                  }
+                  onClick={() => setMobileMenu(false)}
                 >
                   <HiOutlineDocumentText size={18}/> Blogs
                 </NavLink>
