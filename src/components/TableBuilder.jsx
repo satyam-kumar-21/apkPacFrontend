@@ -2,15 +2,29 @@ import React, { useState } from 'react';
 
 const TableBuilder = ({ value = '', onChange }) => {
   // value is HTML string, parse to rows
-  const [rows, setRows] = useState(() => {
-    if (!value) return [{ key: '', value: '' }];
-    const doc = new DOMParser().parseFromString(value, 'text/html');
+  const defaultRows = [
+    { key: 'Category', value: '' },
+    { key: 'Latest Version', value: '' },
+    { key: 'Publish Date', value: '' },
+    { key: 'Developer', value: '' },
+    { key: 'Security', value: '100% Safe' },
+    { key: 'Price', value: 'Free' }
+  ];
+  const parseRows = val => {
+    if (!val) return [...defaultRows];
+    const doc = new DOMParser().parseFromString(val, 'text/html');
     const trs = Array.from(doc.querySelectorAll('tr'));
     return trs.map(tr => {
       const tds = tr.querySelectorAll('td');
       return { key: tds[0]?.innerText || '', value: tds[1]?.innerText || '' };
     });
-  });
+  };
+  const [rows, setRows] = useState(() => parseRows(value));
+
+  // Sync rows with value prop when value changes
+  React.useEffect(() => {
+    setRows(parseRows(value));
+  }, [value]);
 
   const handleRowChange = (idx, field, val) => {
     const updated = rows.map((row, i) => i === idx ? { ...row, [field]: val } : row);

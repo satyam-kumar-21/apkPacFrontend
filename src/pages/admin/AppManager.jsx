@@ -49,7 +49,36 @@ const AppManager = () => {
   };
 
   const handleInput = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm(prev => {
+      let updated = { ...prev, [name]: value };
+      // If category changes, update Description 1 table's Category row
+      if (name === 'category') {
+        // Parse table rows from description1
+        let rows = [];
+        if (prev.description1) {
+          const doc = new window.DOMParser().parseFromString(prev.description1, 'text/html');
+          rows = Array.from(doc.querySelectorAll('tr')).map(tr => {
+            const tds = tr.querySelectorAll('td');
+            return { key: tds[0]?.innerText || '', value: tds[1]?.innerText || '' };
+          });
+        } else {
+          rows = [
+            { key: 'Category', value: '' },
+            { key: 'Latest Version', value: '' },
+            { key: 'Publish Date', value: '' },
+            { key: 'Developer', value: '' },
+            { key: 'Security', value: '100% Safe' },
+            { key: 'Price', value: 'Free' }
+          ];
+        }
+        // Update Category row value
+        rows = rows.map(row => row.key === 'Category' ? { ...row, value } : row);
+        // Convert back to HTML table
+        updated.description1 = `<table>${rows.map(r => `<tr><td>${r.key}</td><td>${r.value}</td></tr>`).join('')}</table>`;
+      }
+      return updated;
+    });
   };
 
   const handleIconChange = e => {
