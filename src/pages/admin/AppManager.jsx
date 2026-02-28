@@ -120,11 +120,17 @@ const AppManager = () => {
       let iconUrl = form.icon;
       if (iconFile) {
         try {
+          // Upload icon to backend
           const fd = new FormData();
-          fd.append('file', iconFile);
-          fd.append('upload_preset', 'apkpac');
-          const res = await axios.post('https://api.cloudinary.com/v1_1/dzfw1vr7t/image/upload', fd);
-          iconUrl = res.data.secure_url;
+          fd.append('icon', iconFile);
+          const token = localStorage.getItem('apkpac_admin_token');
+          const res = await axios.post(`${API}/apps/upload-icon`, fd, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          iconUrl = res.data.url;
         } catch (err) {
           setError('Icon upload failed: ' + (err.response?.data?.error?.message || err.message));
           setLoading(false);
@@ -134,18 +140,21 @@ const AppManager = () => {
       // Upload images
       let imagesUrls = [];
       if (imageFiles.length) {
-        for (let img of imageFiles) {
-          try {
-            const fd = new FormData();
-            fd.append('file', img);
-            fd.append('upload_preset', 'apkpac');
-            const res = await axios.post('https://api.cloudinary.com/v1_1/dzfw1vr7t/image/upload', fd);
-            imagesUrls.push(res.data.secure_url);
-          } catch (err) {
-            setError('Screenshot upload failed: ' + (err.response?.data?.error?.message || err.message));
-            setLoading(false);
-            return;
-          }
+        try {
+          const fd = new FormData();
+          imageFiles.forEach((img) => fd.append('images', img));
+          const token = localStorage.getItem('apkpac_admin_token');
+          const res = await axios.post(`${API}/apps/upload-images`, fd, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          imagesUrls = res.data.urls;
+        } catch (err) {
+          setError('Screenshot upload failed: ' + (err.response?.data?.error?.message || err.message));
+          setLoading(false);
+          return;
         }
       }
       // Submit app (add or edit)
