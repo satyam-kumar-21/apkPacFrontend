@@ -9,6 +9,7 @@ import FinanceAppsSection from "../components/FinanceAppsSection";
 import EntertainmentAppsSection from "../components/EntertainmentAppsSection";
 import CommunicationAppsSection from "../components/CommunicationAppsSection";
 import ToolsAppsSection from "../components/ToolsAppsSection";
+import ShoppingAppsSection from "../components/ShoppingAppsSection";
 import AppCard from '../components/AppCard';
 import { useGetAppsQuery } from '../services/api';
 import ProductivityAppsSection from "../components/ProductivityAppsSection";
@@ -60,6 +61,12 @@ const HomePage = () => {
                 <AdsSection />
             </div>
             <ToolsAppsSection />
+
+            <div className="my-8">
+                <AdsSection />
+            </div>
+
+            <ShoppingAppsSection />
 
             <div className="my-8">
                 <AdsSection />
