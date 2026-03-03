@@ -10,6 +10,7 @@ import EntertainmentAppsSection from "../components/EntertainmentAppsSection";
 import CommunicationAppsSection from "../components/CommunicationAppsSection";
 import ToolsAppsSection from "../components/ToolsAppsSection";
 import ShoppingAppsSection from "../components/ShoppingAppsSection";
+import FoodAppsSection from "../components/FoodAppsSection";
 import AppCard from '../components/AppCard';
 import { useGetAppsQuery } from '../services/api';
 
@@ -70,6 +71,10 @@ const HomePage = () => {
             </div>
 
             <ShoppingAppsSection />
+                <div className="my-8">
+                    <AdsSection />
+                </div>
+                <FoodAppsSection />
 
             <div className="my-8">
                 <AdsSection />

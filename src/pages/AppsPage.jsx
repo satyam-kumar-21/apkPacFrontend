@@ -10,6 +10,7 @@ import CommunicationAppsSection from "../components/CommunicationAppsSection";
 import ToolsAppsSection from "../components/ToolsAppsSection";
 import ShoppingAppsSection from "../components/ShoppingAppsSection";
 import ProductivityAppsSection from "../components/ProductivityAppsSection";
+import FoodAppsSection from "../components/FoodAppsSection";
 import BusinessAppsSection from "../components/BusinessAppsSection";
 import SocialAppsSection from "../components/SocialAppsSection";
 
@@ -62,6 +63,10 @@ const AppsPage = () => {
       </div>
 
       <ShoppingAppsSection />
+        <div className="my-8">
+          <AdsSection />
+        </div>
+        <FoodAppsSection />
       <div className="my-8">
         <AdsSection />
       </div>
