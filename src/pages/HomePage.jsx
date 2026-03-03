@@ -15,6 +15,7 @@ import { useGetAppsQuery } from '../services/api';
 
 import ProductivityAppsSection from "../components/ProductivityAppsSection";
 import BusinessAppsSection from "../components/BusinessAppsSection";
+import SocialAppsSection from "../components/SocialAppsSection";
 
 const HomePage = () => {
     const { data: apps = [], isLoading } = useGetAppsQuery();
@@ -81,6 +82,12 @@ const HomePage = () => {
             </div>
 
             <BusinessAppsSection />
+
+            <div className="my-8">
+                <AdsSection />
+            </div>
+
+            <SocialAppsSection />
 
             <div className="my-8">
                 <AdsSection />
