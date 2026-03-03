@@ -11,7 +11,8 @@ const categoryMap = {
   "games": "game",
   "finance": "finance",
   "tools": "tool",
-  "entertainment": "entertainment"
+  "entertainment": "entertainment",
+  "business": "business",
 };
 
 const AllAppsPage = () => {
@@ -19,14 +20,18 @@ const AllAppsPage = () => {
   const { data: apps = [], isLoading } = useGetAppsQuery();
   const categoryKey = categoryMap[slug] || slug;
   let filteredApps = [];
-  // For entertainment, tools, productivity: filter by description1 category
-  if (["entertainment", "tools", "productivity"].includes(slug)) {
+  // For entertainment, tools, productivity, business: filter by description1 category
+  if (["entertainment", "tools", "productivity", "business"].includes(slug)) {
     filteredApps = apps.filter(app => {
       if (app.description1) {
         const match = app.description1.match(/<td[^>]*>\s*Category\s*<\/td>\s*<td[^>]*>(.*?)<\/td>/i);
         if (match && match[1].toLowerCase() === slug) {
           return true;
         }
+      }
+      // Also check direct category field for business
+      if (slug === "business" && app.category && app.category.toLowerCase() === "business") {
+        return true;
       }
       return false;
     });
