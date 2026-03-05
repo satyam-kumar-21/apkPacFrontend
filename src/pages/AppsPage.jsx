@@ -1,3 +1,4 @@
+import LifestyleAppsSection from "../components/LifestyleAppsSection";
 import React from "react";
 import TopFreeAppsList from "../components/TopFreeAppsList";
 import AdsSection from "../components/AdsSection";
@@ -77,6 +78,10 @@ const AppsPage = () => {
             <AdsSection />
           </div>
           <PersonalizationAppsSection />
+          <div className="my-8">
+            <AdsSection />
+          </div>
+          <LifestyleAppsSection />
       <div className="my-8">
         <AdsSection />
       </div>
