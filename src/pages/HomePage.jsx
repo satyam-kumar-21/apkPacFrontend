@@ -1,3 +1,4 @@
+import TravelAppsSection from "../components/TravelAppsSection";
 import LifestyleAppsSection from "../components/LifestyleAppsSection";
 import React from "react";
 import HeroSection from "../components/HeroSection";
@@ -93,6 +94,11 @@ const HomePage = () => {
                         <AdsSection />
                     </div>
                     <LifestyleAppsSection />
+
+                    <div className="my-8">
+                        <AdsSection />
+                    </div>
+                    <TravelAppsSection />
 
             <div className="my-8">
                 <AdsSection />
