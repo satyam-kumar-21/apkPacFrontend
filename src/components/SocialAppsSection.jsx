@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import AppCard from "./AppCard";
 import { useGetAppsQuery } from "../services/api";
 
 const SocialAppsSection = () => {
-  const [page, setPage] = useState(0);
-  const limit = 9;
-  const { data, isLoading, isFetching } = useGetAppsQuery({ category: "Social", limit, skip: page * limit });
-  const apps = data?.apps || [];
-  const total = data?.total || 0;
-  const canLoadMore = (page + 1) * limit < total;
+  const { data: apps = [], isLoading } = useGetAppsQuery();
+  // Filter apps for description1 category 'Social'
+  const socialApps = apps.filter((app) => {
+    if (app.description1) {
+      const match = app.description1.match(/<td[^>]*>\s*Category\s*<\/td>\s*<td[^>]*>(.*?)<\/td>/i);
+      if (match && match[1].toLowerCase() === "social") {
+        return true;
+      }
+    }
+    return false;
+  });
+  const showApps = socialApps.slice(0, 9);
 
   return (
     <section className="w-full max-w-6xl mx-auto mt-10 mb-8 px-4">
@@ -23,27 +29,12 @@ const SocialAppsSection = () => {
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {(isLoading || isFetching) && apps.length === 0 ? (
-          Array.from({ length: limit }).map((_, i) => (
-            <div key={i} className="h-32 bg-gray-100 animate-pulse rounded-xl col-span-1 md:col-span-1" />
-          ))
-        ) : (
-          apps.map((app, idx) => (
-            <AppCard key={app._id} app={app} idx={page * limit + idx} />
-          ))
-        )}
+        {isLoading ? (
+          <div className="col-span-3 text-center text-gray-500">Loading...</div>
+        ) : showApps.map((app, idx) => (
+          <AppCard key={app._id} app={app} idx={idx} />
+        ))}
       </div>
-      {canLoadMore && (
-        <div className="flex justify-center mt-6">
-          <button
-            onClick={() => setPage((p) => p + 1)}
-            className="px-6 py-2 bg-pink-500 text-white rounded-lg font-bold shadow hover:scale-105 transition disabled:opacity-50"
-            disabled={isFetching}
-          >
-            {isFetching ? "Loading..." : "Load More"}
-          </button>
-        </div>
-      )}
     </section>
   );
 };
