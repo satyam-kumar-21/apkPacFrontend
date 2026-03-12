@@ -20,6 +20,10 @@ import BusinessAppsSection from "../components/BusinessAppsSection";
 import SocialAppsSection from "../components/SocialAppsSection";
 import MedicalAppsSection from "../components/MedicalAppsSection";
 import ReferenceAppsSection from "../components/ReferenceAppsSection";
+import EducationAppsSection from "../components/EducationAppsSection";
+import WeatherAppsSection from "../components/WeatherAppsSection";
+import VideoAppsSection from "../components/VideoAppsSection";
+import HousingAppsSection from "../components/HousingAppsSection";
 
 const AppsPage = () => {
   return (
@@ -70,30 +74,31 @@ const AppsPage = () => {
       </div>
 
       <ShoppingAppsSection />
-        <div className="my-8">
-          <AdsSection />
-        </div>
-        <FoodAppsSection />
-          <div className="my-8">
-            <AdsSection />
-          </div>
-          <AudioAppsSection />
-          <div className="my-8">
-            <AdsSection />
-          </div>
-          <PersonalizationAppsSection />
-          <div className="my-8">
-            <AdsSection />
-          </div>
-          <LifestyleAppsSection />
-          <div className="my-8">
-            <AdsSection />
-          </div>
-          <TravelAppsSection />
-          <div className="my-8">
-            <AdsSection />
-          </div>
-          <MapsAppsSection />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <FoodAppsSection />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <AudioAppsSection />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <PersonalizationAppsSection />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <LifestyleAppsSection />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <TravelAppsSection />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <MapsAppsSection />
+
       <div className="my-8">
         <AdsSection />
       </div>
@@ -103,7 +108,20 @@ const AppsPage = () => {
         <AdsSection />
       </div>
 
+      <VideoAppsSection />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+      <EducationAppsSection />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
       <BusinessAppsSection />
+
       <div className="my-8">
         <AdsSection />
       </div>
@@ -120,6 +138,18 @@ const AppsPage = () => {
       </div>
 
       <ReferenceAppsSection />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+      <WeatherAppsSection />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+      <HousingAppsSection />
 
       <div className="my-8">
         <AdsSection />
