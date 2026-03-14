@@ -157,6 +157,24 @@ const AppsPage = () => {
       <div className="my-8">
         <AdsSection />
       </div>
+
+       <AppsSection category="Comics" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+       <AppsSection category="Beauty" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+       <AppsSection category="Parenting" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
     </>
   );
 };
