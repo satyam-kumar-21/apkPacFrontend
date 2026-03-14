@@ -1,18 +1,7 @@
 import React from "react";
 import AdsSection from "../components/AdsSection";
 import PopularGamesSection from "../components/PopularGamesSection";
-import ActionGameSection from "../components/ActionGameSection";
-import AdventureGameSection from "../components/AdventureGameSection";
-import BoardGameSection from "../components/BoardGameSection";
-import CardGameSection from "../components/CardGameSection";
-import CasualGameSection from "../components/CasualGameSection";
-import DemoGameSection from "../components/DemoGameSection";
-import MusicGameSection from "../components/MusicGameSection";
-import PuzzleGameSection from "../components/PuzzleGameSection";
-import RolePlayingGameSection from "../components/RolePlayingGameSection";
-import SimulationGameSection from "../components/SimulationGameSection";
-import SportsGameSection from "../components/SportsGameSection";
-import WordGameSection from "../components/WordGameSection";
+import GameSection from "../components/GameSection";
 
 const GamesPage = () => {
   return (
@@ -26,65 +15,67 @@ const GamesPage = () => {
         <AdsSection />
       </div>
 
-      <ActionGameSection />
+      <GameSection category="Action" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+<GameSection category="Adventure" />
+     
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <AdventureGameSection />
+      <GameSection category="Board" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <GameSection category="Card" />
+     
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <GameSection category="Casual" />
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <BoardGameSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-      <CardGameSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-      <CasualGameSection />
+      <GameSection category="Demo" />
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <DemoGameSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-
-      <MusicGameSection />
+      <GameSection category="Music" />
 
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <PuzzleGameSection />
+      <GameSection category="Puzzle" />
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <RolePlayingGameSection />
+      <GameSection category="Role Playing" />
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <SimulationGameSection />
+      <GameSection category="Simulation" />
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <SportsGameSection />
+      <GameSection category="Sports" />
 
       <div className="my-8">
         <AdsSection />
       </div>
-      <WordGameSection />
+      <GameSection category="Word" />
 
       <div className="my-8">
         <AdsSection />
       </div>
+
 
       <div className="my-8">
         <AdsSection />

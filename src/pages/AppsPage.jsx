@@ -1,29 +1,6 @@
-import MapsAppsSection from "../components/MapsAppsSection";
-import TravelAppsSection from "../components/TravelAppsSection";
-import LifestyleAppsSection from "../components/LifestyleAppsSection";
 import React from "react";
-import TopFreeAppsList from "../components/TopFreeAppsList";
 import AdsSection from "../components/AdsSection";
-import PopularGamesSection from "../components/PopularGamesSection";
-import PopularAppsSection from "../components/PopularAppsSection";
-import PopularDesktopSoftwares from "../components/PopularDesktopSoftwares";
-import FinanceAppsSection from "../components/FinanceAppsSection";
-import EntertainmentAppsSection from "../components/EntertainmentAppsSection";
-import CommunicationAppsSection from "../components/CommunicationAppsSection";
-import ToolsAppsSection from "../components/ToolsAppsSection";
-import ShoppingAppsSection from "../components/ShoppingAppsSection";
-import ProductivityAppsSection from "../components/ProductivityAppsSection";
-import FoodAppsSection from "../components/FoodAppsSection";
-import AudioAppsSection from "../components/AudioAppsSection";
-import PersonalizationAppsSection from "../components/PersonalizationAppsSection";
-import BusinessAppsSection from "../components/BusinessAppsSection";
-import SocialAppsSection from "../components/SocialAppsSection";
-import MedicalAppsSection from "../components/MedicalAppsSection";
-import ReferenceAppsSection from "../components/ReferenceAppsSection";
-import EducationAppsSection from "../components/EducationAppsSection";
-import WeatherAppsSection from "../components/WeatherAppsSection";
-import VideoAppsSection from "../components/VideoAppsSection";
-import HousingAppsSection from "../components/HousingAppsSection";
+import AppsSection from "../components/AppsSection";
 
 const AppsPage = () => {
   return (
@@ -33,123 +10,149 @@ const AppsPage = () => {
         <AdsSection />
       </div>
 
-      <TopFreeAppsList />
+
+      <AppsSection category="Top Apps" />
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <PopularGamesSection />
+      <AppsSection category="Popular Apps" />
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <PopularAppsSection />
+      <AppsSection category="Desktop" />
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <PopularDesktopSoftwares />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-
-      <FinanceAppsSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-
-      <EntertainmentAppsSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-
-      <CommunicationAppsSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-
-      <ToolsAppsSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-
-      <ShoppingAppsSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-      <FoodAppsSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-      <AudioAppsSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-      <PersonalizationAppsSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-      <LifestyleAppsSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-      <TravelAppsSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-      <MapsAppsSection />
+      <AppsSection category="Finance" />
 
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <ProductivityAppsSection />
+      <AppsSection category="Entertainment" />
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <VideoAppsSection />
+      <AppsSection category="Communication" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+      <AppsSection category="Tools" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+      <AppsSection category="Shopping" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <AppsSection category="Food" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <AppsSection category="Audio" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <AppsSection category="Personalization" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <AppsSection category="Lifestyle" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <AppsSection category="Travel" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <AppsSection category="Maps" />
 
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <EducationAppsSection />
+      <AppsSection category="Productivity" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+      <AppsSection category="Video" />
 
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <BusinessAppsSection />
+      <AppsSection category="Education" />
 
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <SocialAppsSection />
-      <div className="my-8">
-        <AdsSection />
-      </div>
-
-      <MedicalAppsSection />
+      <AppsSection category="Business" />
 
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <ReferenceAppsSection />
+      <AppsSection category="Social" />
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+      <AppsSection category="Medical" />
 
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <WeatherAppsSection />
+      <AppsSection category="Reference" />
 
       <div className="my-8">
         <AdsSection />
       </div>
 
-      <HousingAppsSection />
+      <AppsSection category="Weather" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+      <AppsSection category="Housing" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+      <AppsSection category="Art" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+      <AppsSection category="News" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+      <AppsSection category="Vehicles" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+       <AppsSection category="Photography" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+       <AppsSection category="Dating" />
 
       <div className="my-8">
         <AdsSection />
