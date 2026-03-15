@@ -4,7 +4,8 @@ import { useGetAppsQuery } from '../services/api';
 import AdsSection from '../components/AdsSection';
 
 const TopAppsPage = () => {
-  const { data: apps = [], isLoading } = useGetAppsQuery();
+  const { data, isLoading } = useGetAppsQuery();
+  const apps = data?.apps || [];
   // Filter apps by direct category field 'Top Apps' (case-insensitive)
   const topApps = apps.filter(app => (app.category || '').toLowerCase().includes('top apps'));
 

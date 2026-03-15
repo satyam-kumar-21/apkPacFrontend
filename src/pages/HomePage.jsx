@@ -4,8 +4,10 @@ import AdsSection from "../components/AdsSection";
 import { useGetAppsQuery } from '../services/api';
 import AppsSection from "../components/AppsSection";
 
+
 const HomePage = () => {
-    const { data: apps = [], isLoading } = useGetAppsQuery();
+    const { data, isLoading } = useGetAppsQuery();
+    const apps = data?.apps || [];
 
     // Example: show first 6 apps
     const homeApps = apps.slice(0, 6);

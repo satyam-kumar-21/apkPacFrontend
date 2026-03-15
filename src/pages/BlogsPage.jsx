@@ -2,9 +2,8 @@ import React from "react";
 
 import AdsSection from "../components/AdsSection";
 import EditorsChoiceSection from "../components/EditorsChoiceSection";
-import TopFreeAppsList from "../components/TopFreeAppsList";
-import PopularDesktopSoftwares from "../components/PopularDesktopSoftwares";
-import PopularGamesSection from "../components/PopularGamesSection";
+import AppsSection from "../components/AppsSection";
+
 
 const BlogsPage = () => {
   return (
@@ -17,15 +16,15 @@ const BlogsPage = () => {
       <div className="my-8">
         <AdsSection />
       </div>
-      <TopFreeAppsList />
+     <AppsSection category="Top Apps" />
       <div className="my-8">
         <AdsSection />
       </div>
-      <PopularDesktopSoftwares />
+      <AppsSection category="Desktop" />
       <div className="my-8">
         <AdsSection />
       </div>
-      <PopularGamesSection />
+        
       <div className="my-8">
         <AdsSection />
       </div>

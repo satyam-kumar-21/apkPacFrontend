@@ -12,7 +12,8 @@ import AppCard from '../components/AppCard';
 
 const AppDetailsPage = () => {
   const { id } = useParams();
-  const { data: apps = [], isLoading } = useGetAppsQuery();
+  const { data, isLoading } = useGetAppsQuery();
+  const apps = data?.apps || [];
 
   // Find app by slugified name
   const slug = id.toLowerCase();

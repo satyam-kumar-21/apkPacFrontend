@@ -35,7 +35,12 @@ export const api = createApi({
     }),
     // Apps
     getApps: builder.query({
-      query: () => '/apps',
+      // Accepts { page, limit, category } as params
+      query: ({ page = 1, limit = 20, category } = {}) => {
+        let url = `/apps?page=${page}&limit=${limit}`;
+        if (category) url += `&category=${encodeURIComponent(category)}`;
+        return url;
+      },
       providesTags: ['App'],
     }),
     addApp: builder.mutation({

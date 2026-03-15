@@ -40,8 +40,9 @@ const AppManager = () => {
   }, []);
 
   const fetchApps = async () => {
-    const res = await axios.get(`${API}/apps`);
-    setApps(res.data);
+    // Request all apps by setting a very high limit
+    const res = await axios.get(`${API}/apps?limit=10000`);
+    setApps(res.data.apps || []);
   };
   const fetchCategories = async () => {
     const res = await axios.get(`${API}/categories`);

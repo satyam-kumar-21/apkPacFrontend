@@ -13,7 +13,8 @@ const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [search, setSearch] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
-  const { data: apps = [] } = useGetAppsQuery();
+  const { data } = useGetAppsQuery();
+  const apps = data?.apps || [];
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const searchResults = search.trim()

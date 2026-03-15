@@ -1,6 +1,7 @@
 import React from "react";
-import TopFreeAppsList from "../components/TopFreeAppsList";
+
 import AdsSection from "../components/AdsSection";
+import AppsSection from "../components/AppsSection";
 
 const faqs = [
   {
@@ -80,7 +81,8 @@ const ZipUnzipPage = () => {
       </div>
       <AdsSection />
       <h2 className="text-2xl font-bold text-gray-900 mb-4">Top Apps</h2>
-      <TopFreeAppsList />
+    
+    <AppsSection category="Top Apps" /> 
     </div>
   );
 };

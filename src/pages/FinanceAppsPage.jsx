@@ -5,7 +5,8 @@ import AppCard from '../components/AppCard';
 import { Link } from 'react-router-dom';
 
 const FinanceAppsPage = () => {
-  const { data: apps = [], isLoading } = useGetAppsQuery();
+  const { data, isLoading } = useGetAppsQuery();
+  const apps = data?.apps || [];
   // Filter apps for finance category
   const financeApps = apps.filter(app => (app.category || '').toLowerCase().includes('finance'));
 

@@ -1,4 +1,13 @@
-import React from "react";
+// import React from "react";
+// import { useParams } from "react-router-dom";
+// import { useGetAppsQuery } from '../services/api';
+// import AdsSection from '../components/AdsSection';
+// import AppCard from '../components/AppCard';
+
+
+
+
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetAppsQuery } from '../services/api';
 import AdsSection from '../components/AdsSection';
@@ -17,27 +26,10 @@ const categoryMap = {
 
 const AllAppsPage = () => {
   const { slug } = useParams();
-  const { data: apps = [], isLoading } = useGetAppsQuery();
   const categoryKey = categoryMap[slug] || slug;
-  let filteredApps = [];
-  // For entertainment, tools, productivity, business: filter by description1 category
-  if (["entertainment", "tools", "productivity", "business"].includes(slug)) {
-    filteredApps = apps.filter(app => {
-      if (app.description1) {
-        const match = app.description1.match(/<td[^>]*>\s*Category\s*<\/td>\s*<td[^>]*>(.*?)<\/td>/i);
-        if (match && match[1].toLowerCase() === slug) {
-          return true;
-        }
-      }
-      // Also check direct category field for business
-      if (slug === "business" && app.category && app.category.toLowerCase() === "business") {
-        return true;
-      }
-      return false;
-    });
-  } else {
-    filteredApps = apps.filter(app => (app.category || '').toLowerCase().includes(categoryKey));
-  }
+  // Fetch all apps for this category (no pagination)
+  const { data, isLoading } = useGetAppsQuery({ page: 1, limit: 10000, category: categoryKey });
+  const apps = data?.apps || [];
 
   return (
     <div className="w-full max-w-6xl mx-auto mt-10 mb-8 px-4">
@@ -48,7 +40,7 @@ const AllAppsPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {isLoading ? (
           <div className="col-span-2 text-center text-gray-500">Loading...</div>
-        ) : filteredApps.map((app, idx) => (
+        ) : apps.map((app, idx) => (
           <AppCard app={app} idx={idx} key={app._id} />
         ))}
       </div>

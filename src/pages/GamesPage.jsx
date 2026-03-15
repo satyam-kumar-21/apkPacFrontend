@@ -1,7 +1,7 @@
 import React from "react";
 import AdsSection from "../components/AdsSection";
-import PopularGamesSection from "../components/PopularGamesSection";
 import GameSection from "../components/GameSection";
+
 
 const GamesPage = () => {
   return (
@@ -10,10 +10,10 @@ const GamesPage = () => {
       <div className="my-8">
         <AdsSection />
       </div>
-      <PopularGamesSection />
+      {/* <GameSection category="Popular Games" />
       <div className="my-8">
         <AdsSection />
-      </div>
+      </div> */}
 
       <GameSection category="Action" />
       <div className="my-8">
