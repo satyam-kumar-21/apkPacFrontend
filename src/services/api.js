@@ -51,6 +51,11 @@ export const api = createApi({
       }),
       invalidatesTags: ['App'],
     }),
+    // Get single app by slug
+    getAppBySlug: builder.query({
+      query: (slug) => `/apps/slug/${encodeURIComponent(slug)}`,
+      providesTags: ['App'],
+    }),
     // Add more endpoints as needed
   }),
 });
@@ -62,4 +67,5 @@ export const {
   useUpdateCategoryMutation,
   useGetAppsQuery,
   useAddAppMutation,
+  useGetAppBySlugQuery,
 } = api;

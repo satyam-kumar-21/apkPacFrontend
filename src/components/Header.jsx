@@ -157,28 +157,7 @@ const Header = () => {
                     )}
           <NavLink to="/apps" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-1 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-1 transition flex items-center gap-2'}><HiOutlineViewGrid size={20}/> Apps</NavLink>
           <NavLink to="/games" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-1 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-1 transition flex items-center gap-2'}><HiOutlinePuzzle size={20}/> Games</NavLink>
-          <div className="relative" ref={postsDropdownRef}>
-            <button onClick={() => handleDropdown('posts')} className="hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-1 flex items-center gap-2 transition focus:outline-none">
-              <HiOutlineDocumentText size={20}/> Posts <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
-            </button>
-            {openDropdown === 'posts' && (
-              <div className="absolute right-0 mt-2 w-40 bg-white/95 text-blue-900 border border-blue-100 rounded-xl shadow-xl animate-fade-in z-50 backdrop-blur">
-                <Link to="/posts/topics" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"><HiOutlineDocumentText size={18}/> Topics</Link>
-                <Link to="/posts/blogs" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"><HiOutlineDocumentText size={18}/> Blogs</Link>
-              </div>
-            )}
-          </div>
-          <div className="relative" ref={toolsDropdownRef}>
-            <button onClick={() => handleDropdown('tools')} className="hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-1 flex items-center gap-2 transition focus:outline-none">
-              <HiOutlineCog size={20}/> Tools <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
-            </button>
-            {openDropdown === 'tools' && (
-              <div className="absolute right-0 mt-2 w-52 bg-white/95 text-blue-900 border border-blue-100 rounded-xl shadow-xl animate-fade-in z-50 backdrop-blur">
-                <NavLink to="/tools/zip-unzip" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2" onClick={() => setOpenDropdown(null)}><HiOutlineCog size={18}/> Zip & Unzip</NavLink>
-                <NavLink to="/tools/qr-tool" className="block px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2" onClick={() => setOpenDropdown(null)}><HiOutlineCog size={18}/> QR Code Tool</NavLink>
-              </div>
-            )}
-          </div>
+          {/* Removed Posts and Tools dropdowns */}
         </nav>
         {/* Mobile menu icon */}
         <button className="lg:hidden flex items-center justify-center p-2 rounded-md text-gray-700 hover:bg-gray-200 focus:outline-none" onClick={() => setMobileMenu((prev) => !prev)} aria-label="Open menu">
@@ -193,73 +172,7 @@ const Header = () => {
           <div className="flex flex-col gap-2 pt-4">
             <NavLink to="/apps" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-2 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 transition flex items-center gap-2'} onClick={() => setMobileMenu(false)}><HiOutlineViewGrid size={20}/> Apps</NavLink>
             <NavLink to="/games" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-2 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 transition flex items-center gap-2'} onClick={() => setMobileMenu(false)}><HiOutlinePuzzle size={20}/> Games</NavLink>
-            <button
-              id="mobile-posts-btn"
-              onClick={() => setOpenDropdown(openDropdown === 'posts' ? null : 'posts')}
-              className="hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 flex items-center gap-2 transition focus:outline-none"
-              type="button"
-              aria-expanded={openDropdown === 'posts'}
-              aria-controls="mobile-posts-dropdown"
-            >
-              <HiOutlineDocumentText size={20}/> Posts <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
-            </button>
-            {openDropdown === 'posts' && (
-              <div id="mobile-posts-dropdown" className="ml-4 flex flex-col gap-1">
-                <NavLink
-                  to="/posts/topics"
-                  className={({isActive}) =>
-                    (isActive ? 'bg-gray-200 text-blue-700 ' : '') +
-                    'block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2'
-                  }
-                  onClick={() => setMobileMenu(false)}
-                >
-                  <HiOutlineDocumentText size={18}/> Topics
-                </NavLink>
-                <NavLink
-                  to="/posts/blogs"
-                  className={({isActive}) =>
-                    (isActive ? 'bg-gray-200 text-blue-700 ' : '') +
-                    'block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2'
-                  }
-                  onClick={() => setMobileMenu(false)}
-                >
-                  <HiOutlineDocumentText size={18}/> Blogs
-                </NavLink>
-              </div>
-            )}
-            <button
-              onClick={() => setOpenDropdown(openDropdown === 'tools' ? null : 'tools')}
-              className="hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 flex items-center gap-2 transition focus:outline-none"
-              type="button"
-              aria-expanded={openDropdown === 'tools'}
-              aria-controls="mobile-tools-dropdown"
-            >
-              <HiOutlineCog size={20}/> Tools <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
-            </button>
-            {openDropdown === 'tools' && (
-              <div id="mobile-tools-dropdown" className="ml-4 flex flex-col gap-1">
-                <NavLink
-                  to="/tools/zip-unzip"
-                  className="block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"
-                  onClick={() => {
-                    setOpenDropdown(null);
-                    setMobileMenu(false);
-                  }}
-                >
-                  <HiOutlineCog size={18}/> Zip & Unzip
-                </NavLink>
-                <NavLink
-                  to="/tools/qr-tool"
-                  className="block text-left w-full px-4 py-2 hover:bg-blue-50 rounded-xl flex items-center gap-2"
-                  onClick={() => {
-                    setOpenDropdown(null);
-                    setMobileMenu(false);
-                  }}
-                >
-                  <HiOutlineCog size={18}/> QR Code Tool
-                </NavLink>
-              </div>
-            )}
+            {/* Removed Posts and Tools dropdowns for mobile */}
           </div>
         </div>
       )}

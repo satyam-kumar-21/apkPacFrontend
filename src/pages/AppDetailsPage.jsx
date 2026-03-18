@@ -1,47 +1,38 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useGetAppsQuery } from "../services/api";
+import { useGetAppsQuery, useGetAppBySlugQuery } from "../services/api";
+import AppsSection from "../components/AppsSection";
 import AdsSection from "../components/AdsSection";
-import OtherAppsSection from "../components/OtherAppsSection";
+
 import RatingsBar from "../components/RatingsBar";
 import DownloadButtons from "../components/DownloadButtons";
-import SimilarAppsSection from "../components/SimilarAppsSection";
+
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { FaTag, FaCodeBranch, FaCalendarAlt, FaUserTie, FaShieldAlt, FaDollarSign } from 'react-icons/fa';
 import AppCard from '../components/AppCard';
 
 const AppDetailsPage = () => {
   const { id } = useParams();
-  const { data, isLoading } = useGetAppsQuery();
-  const apps = data?.apps || [];
+
 
   // Find app by slugified name
   const slug = id.toLowerCase();
-  const app = apps.find((a) => a.name && a.name.toLowerCase().replace(/\s+/g, '-') === slug);
+  const { data: app, isLoading, error } = useGetAppBySlugQuery(slug);
+
+  // Always call the similar apps hook, use category if available
+  let desc1Category = undefined;
+  if (app) {
+    desc1Category = app.category;
+    if (app.description1) {
+      const match = app.description1.match(/<td[^>]*>\s*Category\s*<\/td>\s*<td[^>]*>(.*?)<\/td>/i);
+      if (match) desc1Category = match[1];
+    }
+  }
+  const { data: similarData, isLoading: loadingSimilar } = useGetAppsQuery({ category: desc1Category, limit: 6 });
+  const desc1MatchedApps = (similarData?.apps || []).filter(a => app && a._id !== app._id);
 
   if (isLoading) return <div className="p-8 text-center text-lg">Loading...</div>;
-  if (!app) return <div className="p-8 text-center text-lg">App not found.</div>;
-
-  // Extract description1 category value
-  let desc1Category = app.category;
-  if (app.description1) {
-    const match = app.description1.match(/<td[^>]*>\s*Category\s*<\/td>\s*<td[^>]*>(.*?)<\/td>/i);
-    if (match) desc1Category = match[1];
-  }
-
-  // 1. Apps with description1 category match (exclude current app)
-  const desc1MatchedApps = apps.filter(a => {
-    if (!a.description1) return false;
-    if (a._id === app._id) return false;
-    const match = a.description1.match(/<td[^>]*>\s*Category\s*<\/td>\s*<td[^>]*>(.*?)<\/td>/i);
-    return match && match[1] === desc1Category;
-  }).slice(0, 6);
-
-  // 2. 10 random apps with direct category match (exclude current app)
-  const directMatchedApps = apps.filter(a => a._id !== app._id && (a.category || '').toLowerCase() === (app.category || '').toLowerCase());
-  // Shuffle and take 10
-  const shuffled = [...directMatchedApps].sort(() => 0.5 - Math.random());
-  const randomDirectApps = shuffled.slice(0, 10);
+  if (error || !app) return <div className="p-8 text-center text-lg">App not found.</div>;
 
   return (
     <div className="max-w-5xl mx-auto px-2 md:px-0 mt-8 mb-12">
@@ -208,22 +199,15 @@ const AppDetailsPage = () => {
           <div className="my-8">
             <AdsSection />
           </div>
-          {/* 10 random apps with direct category match (not including current app) */}
-          {randomDirectApps.length > 0 && (
-            <div className="my-10">
-              <h3 className="text-lg font-bold mb-4 text-gray-900">Other Popular Apps</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {randomDirectApps.map((a, idx) => (
-                  <AppCard app={a} idx={idx} key={a._id} />
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Other Popular Apps section using AppsSection */}
+          <AppsSection category="Popular Apps" />
         </div>
         {/* Sidebar */}
         <div className="w-full md:w-72 flex-shrink-0 flex flex-col">
           <AdsSection />
-          {desc1MatchedApps.length > 0 && (
+          {loadingSimilar ? (
+            <div className="my-10 text-center text-gray-500">Loading similar apps...</div>
+          ) : desc1MatchedApps.length > 0 && (
             <div className="my-10">
               <h3 className="text-lg font-bold mb-4 text-gray-900">Similar Apps</h3>
               <div className="flex flex-col gap-3">
