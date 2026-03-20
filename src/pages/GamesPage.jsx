@@ -19,8 +19,8 @@ const GamesPage = () => {
       <div className="my-8">
         <AdsSection />
       </div>
-<GameSection category="Adventure" />
-     
+      <GameSection category="Adventure" />
+
       <div className="my-8">
         <AdsSection />
       </div>
@@ -30,7 +30,7 @@ const GamesPage = () => {
         <AdsSection />
       </div>
       <GameSection category="Card" />
-     
+
       <div className="my-8">
         <AdsSection />
       </div>
@@ -76,11 +76,35 @@ const GamesPage = () => {
         <AdsSection />
       </div>
 
+      <GameSection category="Arcade" />
 
       <div className="my-8">
         <AdsSection />
       </div>
 
+<GameSection category="Racing" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+
+
+      <GameSection category="Strategy" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <GameSection category="Educational" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      <GameSection category="Casino" />
+
+      <div className="my-8">
+        <AdsSection />
+      </div>
+      
 
       <div className="my-8">
         <AdsSection />
