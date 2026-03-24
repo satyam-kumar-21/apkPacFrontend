@@ -19,6 +19,7 @@ export const api = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithOptimization,
   tagTypes: ['App', 'Category'],
+  keepUnusedDataFor: 3600, // Keep cache data for 1 hour
   endpoints: (builder) => ({
     // Categories
     getCategories: builder.query({
@@ -56,7 +57,13 @@ export const api = createApi({
         if (category) url += `&category=${encodeURIComponent(category)}`;
         return url;
       },
-      providesTags: ['App'],
+      providesTags: (result) =>
+        result?.apps
+          ? [
+              ...result.apps.map(({ _id }) => ({ type: 'App', id: _id })),
+              { type: 'App', id: 'LIST' },
+            ]
+          : [{ type: 'App', id: 'LIST' }],
     }),
     addApp: builder.mutation({
       query: (body) => ({
@@ -64,12 +71,13 @@ export const api = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['App'],
+      invalidatesTags: [{ type: 'App', id: 'LIST' }],
     }),
-    // Get single app by slug
+    // Get single app by slug - with per-app caching
     getAppBySlug: builder.query({
       query: (slug) => `/apps/slug/${encodeURIComponent(slug)}`,
-      providesTags: ['App'],
+      providesTags: (result) =>
+        result ? [{ type: 'App', id: result._id }] : [{ type: 'App' }],
     }),
     // Add more endpoints as needed
   }),

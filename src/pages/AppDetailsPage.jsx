@@ -1,7 +1,7 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetAppsQuery, useGetAppBySlugQuery } from "../services/api";
 import { useSelector } from 'react-redux';
+import { useGetAppsQuery, useGetAppBySlugQuery } from "../services/api";
 import AppsSection from "../components/AppsSection";
 import AdsSection from "../components/AdsSection";
 
@@ -17,38 +17,35 @@ const AppDetailsPage = () => {
   const slug = id.toLowerCase();
   const [cachedApp, setCachedApp] = useState(null);
 
-  // First, get the full cache of all apps that was pre-loaded in background
-  const { data: allAppsData } = useGetAppsQuery({ 
-    page: 1, 
-    limit: 10000 
-  }, { 
-    skip: false,
-    refetchOnMountOrArgChange: false,
-    refetchOnFocus: false,
-    refetchOnReconnect: false
-  });
+  // Get all apps from Redux store (populated by background fetch)
+  const reduxAllApps = useSelector((state) => state.apps.allApps);
 
-  // Search for the app in the cached data FIRST (instant, before any backend call)
+  // Helper function to slugify (same as frontend slug generation)
+  const slugify = (name) => {
+    return name?.toLowerCase().replace(/\s+/g, '-') || '';
+  };
+
+  // STEP 1: Check Redux cache for the app FIRST (instant)
   useEffect(() => {
-    if (allAppsData?.apps?.length > 0) {
-      const foundApp = allAppsData.apps.find(app =>
-        app.name.toLowerCase().replace(/\s+/g, '-') === slug ||
-        app.slug?.toLowerCase() === slug ||
-        app.name.toLowerCase() === slug.replace(/-/g, ' ')
-      );
-      if (foundApp) {
-        setCachedApp(foundApp);
+    if (reduxAllApps && reduxAllApps.length > 0) {
+      const found = reduxAllApps.find((app) => slugify(app.name) === slug);
+      if (found) {
+        setCachedApp(found);
+        console.log(`✓ Found app in Redux cache: ${found.name}`);
       }
     }
-  }, [allAppsData, slug]);
+  }, [reduxAllApps, slug]);
 
-  // Only fetch from backend if NOT found in cache
+  // STEP 2: Only fetch from backend if NOT found in Redux cache
   const shouldFetchFromBackend = !cachedApp;
   const { data: appFromBackend, isLoading: backendLoading, error: backendError } = useGetAppBySlugQuery(slug, {
-    skip: !shouldFetchFromBackend // Skip if we found it in cache
+    skip: !shouldFetchFromBackend, // Skip if found in cache
+    refetchOnFocus: false,
+    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: false,
   });
 
-  // Use cache first, fall back to backend
+  // Use cache first, fall back to backend if needed
   const app = cachedApp || appFromBackend;
   const isLoading = !cachedApp && backendLoading;
   const error = !cachedApp && backendError;
@@ -63,22 +60,16 @@ const AppDetailsPage = () => {
     }
   }
 
-  // Try to get similar apps from cache first
-  const cachedSimilarApps = useMemo(() => {
-    if (!allAppsData?.apps || !desc1Category) return [];
-    return allAppsData.apps
-      .filter(a => a.category === desc1Category && app && a._id !== app._id)
-      .slice(0, 6);
-  }, [allAppsData, desc1Category, app]);
-
-  // Only fetch from backend if cache doesn't have similar apps
+  // Fetch similar apps from backend with smart caching
   const { data: similarData, isLoading: loadingSimilar } = useGetAppsQuery(
     { category: desc1Category, limit: 6 },
-    { skip: cachedSimilarApps.length > 0 }
+    {
+      skip: !desc1Category,
+      refetchOnFocus: false,
+      refetchOnMountOrArgChange: false,
+    }
   );
-  const desc1MatchedApps = cachedSimilarApps.length > 0 
-    ? cachedSimilarApps 
-    : (similarData?.apps || []).filter(a => app && a._id !== app._id);
+  const desc1MatchedApps = (similarData?.apps || []).filter(a => app && a._id !== app._id);
 
   if (isLoading) return <div className="p-8 text-center text-lg">Loading...</div>;
   if (error || !app) return <div className="p-8 text-center text-lg">App not found.</div>;
