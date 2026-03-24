@@ -4,6 +4,7 @@ import { HiOutlineViewGrid, HiOutlineDocumentText, HiOutlineCog, HiOutlineCalend
 import { MdApps } from "react-icons/md";
 
 import { useState, useEffect } from 'react';
+import useBackgroundFetchApps from './hooks/useBackgroundFetchApps';
 import ScrollToTop from './components/ScrollToTop';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -49,6 +50,10 @@ function App() {
 }
 
 function DefaultLayout() {
+  // Background fetch all apps on mount to populate Redux cache
+  // This makes app details pages load INSTANTLY from cache
+  useBackgroundFetchApps();
+
   return (
     <>
       <Header />

@@ -1,8 +1,23 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { optimizeAPIResponse } from '../utils/cloudinaryOptimizer';
+
+// Base query with Cloudinary URL optimization
+const baseQuery = fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_URL });
+
+const baseQueryWithOptimization = async (args, api, extraOptions) => {
+  const result = await baseQuery(args, api, extraOptions);
+  
+  // Auto-optimize all Cloudinary URLs in responses
+  if (result.data) {
+    result.data = optimizeAPIResponse(result.data);
+  }
+  
+  return result;
+};
 
 export const api = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_URL }),
+  baseQuery: baseQueryWithOptimization,
   tagTypes: ['App', 'Category'],
   endpoints: (builder) => ({
     // Categories

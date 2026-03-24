@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetAppsQuery, useGetAppBySlugQuery } from "../services/api";
+import { useSelector } from 'react-redux';
 import AppsSection from "../components/AppsSection";
 import AdsSection from "../components/AdsSection";
 
@@ -13,13 +14,46 @@ import AppCard from '../components/AppCard';
 
 const AppDetailsPage = () => {
   const { id } = useParams();
-
-
-  // Find app by slugified name
   const slug = id.toLowerCase();
-  const { data: app, isLoading, error } = useGetAppBySlugQuery(slug);
+  const [cachedApp, setCachedApp] = useState(null);
 
-  // Always call the similar apps hook, use category if available
+  // First, get the full cache of all apps that was pre-loaded in background
+  const { data: allAppsData } = useGetAppsQuery({ 
+    page: 1, 
+    limit: 10000 
+  }, { 
+    skip: false,
+    refetchOnMountOrArgChange: false,
+    refetchOnFocus: false,
+    refetchOnReconnect: false
+  });
+
+  // Search for the app in the cached data FIRST (instant, before any backend call)
+  useEffect(() => {
+    if (allAppsData?.apps?.length > 0) {
+      const foundApp = allAppsData.apps.find(app =>
+        app.name.toLowerCase().replace(/\s+/g, '-') === slug ||
+        app.slug?.toLowerCase() === slug ||
+        app.name.toLowerCase() === slug.replace(/-/g, ' ')
+      );
+      if (foundApp) {
+        setCachedApp(foundApp);
+      }
+    }
+  }, [allAppsData, slug]);
+
+  // Only fetch from backend if NOT found in cache
+  const shouldFetchFromBackend = !cachedApp;
+  const { data: appFromBackend, isLoading: backendLoading, error: backendError } = useGetAppBySlugQuery(slug, {
+    skip: !shouldFetchFromBackend // Skip if we found it in cache
+  });
+
+  // Use cache first, fall back to backend
+  const app = cachedApp || appFromBackend;
+  const isLoading = !cachedApp && backendLoading;
+  const error = !cachedApp && backendError;
+
+  // Get similar apps - try from cache first, then backend
   let desc1Category = undefined;
   if (app) {
     desc1Category = app.category;
@@ -28,8 +62,23 @@ const AppDetailsPage = () => {
       if (match) desc1Category = match[1];
     }
   }
-  const { data: similarData, isLoading: loadingSimilar } = useGetAppsQuery({ category: desc1Category, limit: 6 });
-  const desc1MatchedApps = (similarData?.apps || []).filter(a => app && a._id !== app._id);
+
+  // Try to get similar apps from cache first
+  const cachedSimilarApps = useMemo(() => {
+    if (!allAppsData?.apps || !desc1Category) return [];
+    return allAppsData.apps
+      .filter(a => a.category === desc1Category && app && a._id !== app._id)
+      .slice(0, 6);
+  }, [allAppsData, desc1Category, app]);
+
+  // Only fetch from backend if cache doesn't have similar apps
+  const { data: similarData, isLoading: loadingSimilar } = useGetAppsQuery(
+    { category: desc1Category, limit: 6 },
+    { skip: cachedSimilarApps.length > 0 }
+  );
+  const desc1MatchedApps = cachedSimilarApps.length > 0 
+    ? cachedSimilarApps 
+    : (similarData?.apps || []).filter(a => app && a._id !== app._id);
 
   if (isLoading) return <div className="p-8 text-center text-lg">Loading...</div>;
   if (error || !app) return <div className="p-8 text-center text-lg">App not found.</div>;
