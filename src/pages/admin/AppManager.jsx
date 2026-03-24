@@ -437,11 +437,19 @@ const AppManager = () => {
               </div>
               <div className="col-span-2">
                 <label className="block font-semibold mb-1">Description 2 (Rich Text)</label>
-                <RichTextEditor value={form.description2} onChange={val => setForm(f => ({ ...f, description2: val }))} placeholder="Enter description..." />
+                <RichTextEditor 
+                  value={form.description2} 
+                  onChange={val => setForm(f => ({ ...f, description2: val }))} 
+                  placeholder="Enter description..." 
+                />
               </div>
               <div className="col-span-2">
                 <label className="block font-semibold mb-1">Description 3 (Rich Text)</label>
-                <RichTextEditor value={form.description3} onChange={val => setForm(f => ({ ...f, description3: val }))} placeholder="Enter description..." />
+                <RichTextEditor 
+                  value={form.description3} 
+                  onChange={val => setForm(f => ({ ...f, description3: val }))} 
+                  placeholder="Enter description..." 
+                />
               </div>
             </div>
             {error && <div className="text-red-600 font-semibold mb-2">{error}</div>}
