@@ -1,38 +1,31 @@
-  // Logout handler
-  const handleLogout = () => {
-    localStorage.removeItem('apkpac_admin_token');
-    navigate('/admin/login');
-  };
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useGetAppsQuery } from '../services/api';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { HiOutlineViewGrid, HiOutlinePuzzle, HiOutlineDocumentText, HiOutlineCog, HiOutlineSearch } from 'react-icons/hi';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  
   const [openDropdown, setOpenDropdown] = useState(null);
   const [search, setSearch] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
-  const { data } = useGetAppsQuery();
-  const apps = data?.apps || [];
-  const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith('/admin');
-  const searchResults = search.trim()
-    ? apps.filter(app => {
-        const keyword = search.toLowerCase();
-        let descCat = app.category || '';
-        if (app.description1) {
-          const match = app.description1.match(/<td[^>]*>\s*Category\s*<\/td>\s*<td[^>]*>(.*?)<\/td>/i);
-          if (match) descCat += ' ' + match[1];
-        }
-        return (
-          app.name.toLowerCase().includes(keyword) ||
-          (app.category && app.category.toLowerCase().includes(keyword)) ||
-          descCat.toLowerCase().includes(keyword)
-        );
-      }).slice(0, 8)
-    : [];
   const [mobileMenu, setMobileMenu] = useState(false);
+
+  // Fetch apps with search query - searches all apps in database
+  const { data } = useGetAppsQuery({ 
+    page: 1,
+    limit: 100,
+    search: search.trim()
+  });
+  const searchResults = data?.apps || [];
+
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem('apkpac_admin_token');
+    navigate('/admin/login');
+  };
 
   // Close dropdowns when mobile menu closes
   useEffect(() => {
@@ -45,26 +38,8 @@ const Header = () => {
     setMobileMenu(false);
   }, [location.pathname]);
 
-  // Close mobile dropdowns on outside click (mobile only)
-  useEffect(() => {
-    if (!mobileMenu) return;
-    const handleClick = (e) => {
-      const postsBtn = document.getElementById('mobile-posts-btn');
-      const postsDropdown = document.getElementById('mobile-posts-dropdown');
-      if (
-        openDropdown === 'posts' &&
-        postsBtn && !postsBtn.contains(e.target) &&
-        postsDropdown && !postsDropdown.contains(e.target)
-      ) {
-        setOpenDropdown(null);
-      }
-    };
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, [openDropdown, mobileMenu]);
   const postsDropdownRef = useRef();
   const toolsDropdownRef = useRef();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -110,40 +85,38 @@ const Header = () => {
               value={search}
               onChange={e => {
                 setSearch(e.target.value);
-                setShowDropdown(true);
+                setShowDropdown(e.target.value.trim().length > 0);
               }}
-              onFocus={() => setShowDropdown(true)}
-              onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+              onFocus={() => search.trim().length > 0 && setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
               placeholder="Search apps, games, posts..."
               className="w-full pl-12 pr-4 py-2 rounded-full border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-900 bg-white shadow placeholder:text-gray-400 font-medium text-base md:text-lg"
               autoComplete="off"
             />
-                        {showDropdown && searchResults.length > 0 && (
-                          <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-80 overflow-y-auto">
-                            {searchResults.map((app, idx) => {
-                              let descCat = app.category;
-                              if (app.description1) {
-                                const match = app.description1.match(/<td[^>]*>\s*Category\s*<\/td>\s*<td[^>]*>(.*?)<\/td>/i);
-                                if (match) descCat = match[1];
-                              }
-                              const slug = app.name ? app.name.toLowerCase().replace(/\s+/g, '-') : '';
-                              return (
-                                <Link
-                                  to={`/app/${encodeURIComponent(slug)}`}
-                                  key={app._id}
-                                  className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition no-underline"
-                                  onClick={() => setShowDropdown(false)}
-                                >
-                                  <img src={app.icon} alt={app.name} className="w-8 h-8 rounded-lg object-cover border bg-gray-100" />
-                                  <div className="flex-1 min-w-0">
-                                    <span className="font-semibold text-sm text-gray-800 truncate block">{app.name}</span>
-                                    <span className="text-xs rounded bg-blue-100 text-blue-700 px-2 py-0.5 font-medium">{descCat}</span>
-                                  </div>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        )}
+            {showDropdown && search.trim() && searchResults.length > 0 && (
+              <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-80 overflow-y-auto">
+                {searchResults.map((app) => {
+                  const slug = app.name ? app.name.toLowerCase().replace(/\s+/g, '-') : '';
+                  return (
+                    <Link
+                      to={`/app/${encodeURIComponent(slug)}`}
+                      key={app._id}
+                      className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition no-underline border-b last:border-b-0"
+                      onClick={() => {
+                        setShowDropdown(false);
+                        setSearch('');
+                      }}
+                    >
+                      <img src={app.icon} alt={app.name} className="w-8 h-8 rounded-lg object-cover border bg-gray-100" />
+                      <div className="flex-1 min-w-0">
+                        <span className="font-semibold text-sm text-gray-800 truncate block">{app.name}</span>
+                        <span className="text-xs rounded bg-blue-100 text-blue-700 px-2 py-0.5 font-medium">{app.category}</span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"><HiOutlineSearch size={22} /></span>
           </div>
         </form>

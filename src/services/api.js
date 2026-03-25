@@ -51,10 +51,11 @@ export const api = createApi({
     }),
     // Apps
     getApps: builder.query({
-      // Accepts { page, limit, category } as params
-      query: ({ page = 1, limit = 20, category } = {}) => {
+      // Accepts { page, limit, category, search } as params
+      query: ({ page = 1, limit = 100, category, search } = {}) => {
         let url = `/apps?page=${page}&limit=${limit}`;
         if (category) url += `&category=${encodeURIComponent(category)}`;
+        if (search) url += `&search=${encodeURIComponent(search)}`;
         return url;
       },
       providesTags: (result) =>

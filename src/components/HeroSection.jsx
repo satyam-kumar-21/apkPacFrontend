@@ -6,33 +6,14 @@ const HeroSection = () => {
   const [search, setSearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
-  const { data: apps = [] } = useGetAppsQuery();
-
-  // Safe Search Filtering
-  const searchResults =
-    search.trim() && apps.length > 0
-      ? apps
-          .filter((app) => {
-            if (!app?.name) return false;
-
-            const keyword = search.toLowerCase();
-
-            let descCat = app.category || "";
-
-            if (app.description1) {
-              const match = app.description1.match(
-                /<td[^>]*>\s*Category\s*<\/td>\s*<td[^>]*>(.*?)<\/td>/i
-              );
-              if (match) descCat += " " + match[1];
-            }
-
-            return (
-              app.name.toLowerCase().includes(keyword) ||
-              descCat.toLowerCase().includes(keyword)
-            );
-          })
-          .slice(0, 8)
-      : [];
+  
+  // Fetch apps with search query - searches all apps in database
+  const { data } = useGetAppsQuery({ 
+    page: 1, 
+    limit: 100,
+    search: search.trim()
+  });
+  const searchResults = data?.apps || [];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -59,7 +40,7 @@ const HeroSection = () => {
         </h1>
 
         <p className="text-lg md:text-2xl text-center mb-8 drop-shadow font-medium">
-          Fast, safe, and free APKs for everyone on APKPac
+          Fast, safe, and free APKs for everyone on SmartAppInfo
         </p>
 
         {/* Search Box */}
@@ -75,9 +56,9 @@ const HeroSection = () => {
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
-                setShowDropdown(true);
+                setShowDropdown(e.target.value.trim().length > 0);
               }}
-              onFocus={() => setShowDropdown(true)}
+              onFocus={() => search.trim().length > 0 && setShowDropdown(true)}
               onBlur={() =>
                 setTimeout(() => setShowDropdown(false), 200)
               }
@@ -92,8 +73,8 @@ const HeroSection = () => {
             </button>
           </div>
 
-          {/* Dropdown */}
-          {showDropdown && searchResults.length > 0 && (
+          {/* Dropdown with matching apps - only show when searching */}
+          {showDropdown && search.trim() && searchResults.length > 0 && (
             <div className="absolute left-0 right-0 top-full mt-3 bg-white border border-gray-200 rounded-xl shadow-2xl z-[999] max-h-80 overflow-y-auto">
               {searchResults.map((app) => {
                 const slug = app.name
@@ -106,20 +87,21 @@ const HeroSection = () => {
                     onMouseDown={() => {
                       navigate(`/app/${encodeURIComponent(slug)}`);
                       setShowDropdown(false);
+                      setSearch("");
                     }}
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition cursor-pointer"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition cursor-pointer border-b last:border-b-0"
                   >
                     <img
                       src={app.icon}
                       alt={app.name}
-                      className="w-9 h-9 rounded-lg object-cover border bg-gray-100"
+                      className="w-10 h-10 rounded-lg object-cover border bg-gray-100"
                     />
 
                     <div className="flex-1 min-w-0">
-                      <span className="font-semibold text-sm text-gray-800 truncate block">
+                      <span className="font-semibold text-gray-800 truncate block">
                         {app.name}
                       </span>
-                      <span className="text-xs rounded bg-blue-100 text-blue-700 px-2 py-0.5 font-medium">
+                      <span className="text-xs rounded bg-blue-100 text-blue-700 px-2 py-0.5 font-medium inline-block">
                         {app.category}
                       </span>
                     </div>
