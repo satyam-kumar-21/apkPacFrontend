@@ -3,6 +3,7 @@ import { useGetAppsQuery } from '../services/api';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { HiOutlineViewGrid, HiOutlinePuzzle, HiOutlineDocumentText, HiOutlineCog, HiOutlineSearch } from 'react-icons/hi';
 
+
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
