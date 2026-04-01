@@ -8,14 +8,14 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  
+
   const [openDropdown, setOpenDropdown] = useState(null);
   const [search, setSearch] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
 
   // Fetch apps with search query - searches all apps in database
-  const { data } = useGetAppsQuery({ 
+  const { data } = useGetAppsQuery({
     page: 1,
     limit: 100,
     search: search.trim()
@@ -123,14 +123,14 @@ const Header = () => {
         </form>
         {/* Right: Nav */}
         <nav className="hidden lg:flex gap-2 xl:gap-6 items-center text-gray-800 font-semibold text-base md:text-lg">
-                    {/* Show logout only on admin routes if admin token exists */}
-                    {isAdminRoute && localStorage.getItem('apkpac_admin_token') && (
-                      <button onClick={handleLogout} className="bg-red-600 text-white px-4 py-2 rounded-xl ml-4 font-bold hover:bg-red-700 transition">
-                        Logout
-                      </button>
-                    )}
-          <NavLink to="/apps" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-1 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-1 transition flex items-center gap-2'}><HiOutlineViewGrid size={20}/> Apps</NavLink>
-          <NavLink to="/games" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-1 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-1 transition flex items-center gap-2'}><HiOutlinePuzzle size={20}/> Games</NavLink>
+          {/* Show logout only on admin routes if admin token exists */}
+          {isAdminRoute && localStorage.getItem('apkpac_admin_token') && (
+            <button onClick={handleLogout} className="bg-red-600 text-white px-4 py-2 rounded-xl ml-4 font-bold hover:bg-red-700 transition">
+              Logout
+            </button>
+          )}
+          <NavLink to="/apps" className={({ isActive }) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-1 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-1 transition flex items-center gap-2'}><HiOutlineViewGrid size={20} /> Apps</NavLink>
+          <NavLink to="/games" className={({ isActive }) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-1 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-1 transition flex items-center gap-2'}><HiOutlinePuzzle size={20} /> Games</NavLink>
           {/* Removed Posts and Tools dropdowns */}
         </nav>
         {/* Mobile menu icon */}
@@ -144,8 +144,8 @@ const Header = () => {
       {mobileMenu && (
         <div className="lg:hidden bg-white/95 text-blue-900 border-t border-gray-200 shadow-xl animate-fade-in z-50 backdrop-blur px-4 pb-4">
           <div className="flex flex-col gap-2 pt-4">
-            <NavLink to="/apps" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-2 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 transition flex items-center gap-2'} onClick={() => setMobileMenu(false)}><HiOutlineViewGrid size={20}/> Apps</NavLink>
-            <NavLink to="/games" className={({isActive}) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-2 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 transition flex items-center gap-2'} onClick={() => setMobileMenu(false)}><HiOutlinePuzzle size={20}/> Games</NavLink>
+            <NavLink to="/apps" className={({ isActive }) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-2 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 transition flex items-center gap-2'} onClick={() => setMobileMenu(false)}><HiOutlineViewGrid size={20} /> Apps</NavLink>
+            <NavLink to="/games" className={({ isActive }) => isActive ? 'bg-gray-200 text-blue-700 rounded-xl px-3 py-2 shadow font-bold flex items-center gap-2' : 'hover:bg-gray-100 hover:text-blue-700 rounded-xl px-3 py-2 transition flex items-center gap-2'} onClick={() => setMobileMenu(false)}><HiOutlinePuzzle size={20} /> Games</NavLink>
             {/* Removed Posts and Tools dropdowns for mobile */}
           </div>
         </div>

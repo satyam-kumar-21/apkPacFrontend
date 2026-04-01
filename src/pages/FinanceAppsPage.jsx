@@ -5,10 +5,8 @@ import AppCard from '../components/AppCard';
 import { Link } from 'react-router-dom';
 
 const FinanceAppsPage = () => {
-  const { data, isLoading } = useGetAppsQuery();
-  const apps = data?.apps || [];
-  // Filter apps for finance category
-  const financeApps = apps.filter(app => (app.category || '').toLowerCase().includes('finance'));
+  const { data, isLoading } = useGetAppsQuery({ category: 'Finance', limit: 100 });
+  const financeApps = data?.apps || [];
 
   return (
     <div className="w-full max-w-6xl mx-auto mt-10 mb-8 px-4">
