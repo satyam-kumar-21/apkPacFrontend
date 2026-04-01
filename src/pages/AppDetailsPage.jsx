@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { useGetAppsQuery, useGetAppBySlugQuery } from "../services/api";
@@ -15,31 +15,18 @@ import AppCard from '../components/AppCard';
 const AppDetailsPage = () => {
   const { id } = useParams();
   const slug = id.toLowerCase();
-  const [cachedApp, setCachedApp] = useState(null);
 
-  // Get all apps from Redux store (populated by background fetch)
-  const reduxAllApps = useSelector((state) => state.apps.allApps);
+  // Get O(1) slug lookup map from Redux store (populated by background fetch)
+  const appsBySlug = useSelector((state) => state.apps.appsBySlug);
 
-  // Helper function to slugify (same as frontend slug generation)
-  const slugify = (name) => {
-    return name?.toLowerCase().replace(/\s+/g, '-') || '';
-  };
-
-  // STEP 1: Check Redux cache for the app FIRST (instant)
-  useEffect(() => {
-    if (reduxAllApps && reduxAllApps.length > 0) {
-      const found = reduxAllApps.find((app) => slugify(app.name) === slug);
-      if (found) {
-        setCachedApp(found);
-        console.log(`✓ Found app in Redux cache: ${found.name}`);
-      }
-    }
-  }, [reduxAllApps, slug]);
+  // STEP 1: Synchronous cache lookup using useMemo (instant, no extra render)
+  const cachedApp = useMemo(() => {
+    return appsBySlug?.[slug] || null;
+  }, [appsBySlug, slug]);
 
   // STEP 2: Only fetch from backend if NOT found in Redux cache
-  const shouldFetchFromBackend = !cachedApp;
   const { data: appFromBackend, isLoading: backendLoading, error: backendError } = useGetAppBySlugQuery(slug, {
-    skip: !shouldFetchFromBackend, // Skip if found in cache
+    skip: !!cachedApp, // Skip if found in cache
     refetchOnFocus: false,
     refetchOnReconnect: true,
     refetchOnMountOrArgChange: false,
@@ -60,18 +47,61 @@ const AppDetailsPage = () => {
     }
   }
 
-  // Fetch similar apps from backend with smart caching
+  // Get all apps from Redux for similar apps (instant, no API call)
+  const reduxAllApps = useSelector((state) => state.apps.allApps);
+
+  // Try to get similar apps from Redux cache first, fall back to API
+  const cachedSimilarApps = useMemo(() => {
+    if (!desc1Category || !reduxAllApps || reduxAllApps.length === 0) return null;
+    const cat = desc1Category.toLowerCase();
+    return reduxAllApps
+      .filter(a => {
+        if (app && a._id === app._id) return false;
+        // Check category field
+        if (a.category?.toLowerCase() === cat) return true;
+        // Check description1 table category
+        if (a.description1) {
+          const m = a.description1.match(/<td[^>]*>\s*Category\s*<\/td>\s*<td[^>]*>(.*?)<\/td>/i);
+          if (m && m[1].toLowerCase() === cat) return true;
+        }
+        return false;
+      })
+      .slice(0, 6);
+  }, [reduxAllApps, desc1Category, app]);
+
+  // Only fetch from API if not available in Redux cache
   const { data: similarData, isLoading: loadingSimilar } = useGetAppsQuery(
     { category: desc1Category, limit: 6 },
     {
-      skip: !desc1Category,
+      skip: !desc1Category || (cachedSimilarApps && cachedSimilarApps.length > 0),
       refetchOnFocus: false,
       refetchOnMountOrArgChange: false,
     }
   );
-  const desc1MatchedApps = (similarData?.apps || []).filter(a => app && a._id !== app._id);
+  const desc1MatchedApps = (cachedSimilarApps && cachedSimilarApps.length > 0)
+    ? cachedSimilarApps
+    : (similarData?.apps || []).filter(a => app && a._id !== app._id);
 
-  if (isLoading) return <div className="p-8 text-center text-lg">Loading...</div>;
+  if (isLoading) return (
+    <div className="max-w-5xl mx-auto px-2 md:px-0 mt-8 mb-12 animate-pulse">
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-5 mb-4">
+            <div className="w-20 h-20 rounded-xl bg-gray-200" />
+            <div>
+              <div className="h-8 w-48 bg-gray-200 rounded mb-2" />
+              <div className="h-4 w-32 bg-gray-200 rounded" />
+            </div>
+          </div>
+          <div className="h-40 bg-gray-200 rounded-xl mb-4" />
+          <div className="h-60 bg-gray-200 rounded-xl" />
+        </div>
+        <div className="w-full md:w-72 flex-shrink-0">
+          <div className="h-60 bg-gray-200 rounded-xl" />
+        </div>
+      </div>
+    </div>
+  );
   if (error || !app) return <div className="p-8 text-center text-lg">App not found.</div>;
 
   return (

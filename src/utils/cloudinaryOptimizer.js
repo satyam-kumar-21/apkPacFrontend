@@ -1,10 +1,17 @@
 /**
  * Cloudinary URL Optimizer
  * Automatically optimizes Cloudinary URLs with performance parameters
- * Adds f_auto,q_auto:good,w_500 transformation
+ * Supports dynamic width: f_auto,q_auto:good,w_{size}
  */
 
-const CLOUDINARY_OPTIMIZATION = 'f_auto,q_auto:good,w_500';
+const DEFAULT_WIDTH = 500;
+
+/**
+ * Builds a Cloudinary transformation string with the given width
+ * @param {number} width
+ * @returns {string}
+ */
+const buildTransform = (width = DEFAULT_WIDTH) => `f_auto,q_auto:good,w_${width}`;
 
 /**
  * Checks if a URL is a Cloudinary URL and not already optimized
@@ -13,22 +20,27 @@ const CLOUDINARY_OPTIMIZATION = 'f_auto,q_auto:good,w_500';
  */
 export const isCloudinaryURL = (url) => {
   if (!url || typeof url !== 'string') return false;
-  return url.includes('res.cloudinary.com') && !url.includes(CLOUDINARY_OPTIMIZATION);
+  return url.includes('res.cloudinary.com') && !url.includes('f_auto,q_auto');
 };
 
 /**
  * Optimizes a single Cloudinary URL by adding transformation parameters
- * Usage: optimizeCloudinaryURL('https://res.cloudinary.com/account/image/upload/v123/image.png')
- * Returns: 'https://res.cloudinary.com/account/image/upload/f_auto,q_auto:good,w_500/v123/image.png'
- * 
  * @param {string} url - The Cloudinary URL to optimize
+ * @param {number} [width=500] - Target width for the image
  * @returns {string} - The optimized URL or original if not Cloudinary
  */
-export const optimizeCloudinaryURL = (url) => {
+export const optimizeCloudinaryURL = (url, width = DEFAULT_WIDTH) => {
+  if (!url || typeof url !== 'string' || !url.includes('res.cloudinary.com')) return url;
+  
+  // If already has a width transform, replace it with the requested width
+  if (url.match(/w_\d+/)) {
+    return url.replace(/w_\d+/, `w_${width}`);
+  }
+  
   if (!isCloudinaryURL(url)) return url;
   
   // Replace /upload/ with /upload/{PARAMS}/
-  return url.replace('/upload/', `/upload/${CLOUDINARY_OPTIMIZATION}/`);
+  return url.replace('/upload/', `/upload/${buildTransform(width)}/`);
 };
 
 /**

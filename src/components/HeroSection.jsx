@@ -7,11 +7,13 @@ const HeroSection = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
   
-  // Fetch apps with search query - searches all apps in database
+  // Fetch apps with search query - only when user types
   const { data } = useGetAppsQuery({ 
     page: 1, 
-    limit: 100,
+    limit: 10,
     search: search.trim()
+  }, {
+    skip: !search.trim(), // Don't fetch until user types
   });
   const searchResults = data?.apps || [];
 
@@ -29,7 +31,7 @@ const HeroSection = () => {
       className="relative isolate flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] w-full bg-cover bg-center text-white"
       style={{
         backgroundImage:
-          "linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1500&q=80')",
+          "linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1200&q=60&fm=webp')",
       }}
     >
       {/* Content */}
@@ -67,7 +69,7 @@ const HeroSection = () => {
 
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-600 px-7 py-3 font-semibold text-white text-lg transition"
+              className="bg-blue-700 hover:bg-blue-800 px-7 py-3 font-semibold text-white text-lg transition"
             >
               Search
             </button>

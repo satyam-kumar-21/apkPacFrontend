@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { optimizeCloudinaryURL } from '../utils/cloudinaryOptimizer';
 
 const AppCard = ({ app, idx }) => {
   // Extract category from description1 table
@@ -11,6 +12,8 @@ const AppCard = ({ app, idx }) => {
   }
   // Slugify app name for details page
   const slug = app.name ? app.name.toLowerCase().replace(/\s+/g, '-') : '';
+  // Optimize icon: displayed at 48-56px, fetch at w_100 (2x for retina)
+  const iconSrc = optimizeCloudinaryURL(app.icon, 100);
   
   return (
     <Link to={`/app/${encodeURIComponent(slug)}`} className="block group" style={{ textDecoration: 'none' }}>
@@ -18,10 +21,12 @@ const AppCard = ({ app, idx }) => {
         <div className="flex items-start gap-2 md:gap-4">
           {/* Icon - responsive size */}
           <img 
-            src={app.icon} 
+            src={iconSrc} 
             alt={app.name} 
             className="w-12 h-12 md:w-14 md:h-14 rounded-lg md:rounded-xl object-cover border border-gray-200 bg-gray-100 flex-shrink-0" 
-            loading="lazy" 
+            loading="lazy"
+            width="56"
+            height="56"
           />
           
           {/* Content */}

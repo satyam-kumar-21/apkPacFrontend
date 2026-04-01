@@ -80,6 +80,12 @@ export const api = createApi({
       providesTags: (result) =>
         result ? [{ type: 'App', id: result._id }] : [{ type: 'App' }],
     }),
+    // Batch: get apps for multiple categories in one request
+    getAppsByCategories: builder.query({
+      query: ({ categories, limit = 9 }) =>
+        `/apps/by-categories?categories=${encodeURIComponent(categories.join(','))}&limit=${limit}`,
+      providesTags: [{ type: 'App', id: 'LIST' }],
+    }),
     // Add more endpoints as needed
   }),
 });
@@ -92,4 +98,5 @@ export const {
   useGetAppsQuery,
   useAddAppMutation,
   useGetAppBySlugQuery,
+  useGetAppsByCategoriesQuery,
 } = api;

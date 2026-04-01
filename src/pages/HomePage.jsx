@@ -1,16 +1,37 @@
-import React from "react";
+import React, { useMemo } from "react";
 import HeroSection from "../components/HeroSection";
 import AdsSection from "../components/AdsSection";
-import { useGetAppsQuery } from '../services/api';
 import AppsSection from "../components/AppsSection";
+import { useGetAppsByCategoriesQuery } from "../services/api";
+import { useDispatch, useSelector } from "react-redux";
+import { setAllApps } from "../store";
 
+const CATEGORIES = [
+  "Top Apps", "Popular Apps", "Desktop", "Finance",
+  "Entertainment", "Communication", "Tools", "Shopping", "Food"
+];
 
 const HomePage = () => {
-    const { data, isLoading } = useGetAppsQuery();
-    const apps = data?.apps || [];
+    const dispatch = useDispatch();
+    const existingApps = useSelector((state) => state.apps.allApps);
 
-    // Example: show first 6 apps
-    const homeApps = apps.slice(0, 6);
+    // Single batch request for all homepage categories
+    const { data: batchData } = useGetAppsByCategoriesQuery({
+      categories: CATEGORIES,
+      limit: 9,
+    });
+
+    // Populate Redux cache with batch data so detail pages load instantly
+    React.useEffect(() => {
+      if (batchData && existingApps.length === 0) {
+        const allApps = Object.values(batchData).flat();
+        // Deduplicate by _id
+        const unique = [...new Map(allApps.map(a => [a._id, a])).values()];
+        if (unique.length > 0) {
+          dispatch(setAllApps(unique));
+        }
+      }
+    }, [batchData, existingApps.length, dispatch]);
 
     return (
         <>
@@ -19,51 +40,14 @@ const HomePage = () => {
                 <AdsSection />
             </div>
 
-
-            <AppsSection category="Top Apps" />
-            <div className="my-8">
-                <AdsSection />
-            </div>
-
-            <AppsSection category="Popular Apps" />
-            <div className="my-8">
-                <AdsSection />
-            </div>
-
-            <AppsSection category="Desktop" />
-            <div className="my-8">
-                <AdsSection />
-            </div>
-
-            <AppsSection category="Finance" />
-
-            <div className="my-8">
-                <AdsSection />
-            </div>
-
-            <AppsSection category="Entertainment" />
-            <div className="my-8">
-                <AdsSection />
-            </div>
-
-            <AppsSection category="Communication" />
-            <div className="my-8">
-                <AdsSection />
-            </div>
-
-            <AppsSection category="Tools" />
-            <div className="my-8">
-                <AdsSection />
-            </div>
-
-            <AppsSection category="Shopping" />
-            <div className="my-8">
-                <AdsSection />
-            </div>
-            <AppsSection category="Food" />
-            <div className="my-8">
-                <AdsSection />
-            </div>
+            {CATEGORIES.map((cat, i) => (
+              <React.Fragment key={cat}>
+                <AppsSection category={cat} batchApps={batchData?.[cat]} />
+                <div className="my-8">
+                  <AdsSection />
+                </div>
+              </React.Fragment>
+            ))}
         </>
     );
 };

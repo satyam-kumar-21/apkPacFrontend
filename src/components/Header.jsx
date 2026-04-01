@@ -14,11 +14,13 @@ const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
 
-  // Fetch apps with search query - searches all apps in database
+  // Fetch apps with search query - only when user types
   const { data } = useGetAppsQuery({
     page: 1,
-    limit: 100,
+    limit: 10,
     search: search.trim()
+  }, {
+    skip: !search.trim(), // Don't fetch until user types
   });
   const searchResults = data?.apps || [];
 
@@ -74,7 +76,10 @@ const Header = () => {
         {/* Left: Logo */}
         <div className="flex items-center gap-2 md:gap-4">
           <Link to="/" className="flex items-center">
-            <img src="/smartAppInfoLogo.png" alt="SmartAppInfo.com Logo" className="h-14 w-auto" />
+            <picture>
+              <source srcSet="/smartAppInfoLogo.webp" type="image/webp" />
+              <img src="/smartAppInfoLogo.png" alt="SmartAppInfo.com Logo" className="h-14 w-auto" width="253" height="98" />
+            </picture>
           </Link>
         </div>
         {/* Center: Search */}
