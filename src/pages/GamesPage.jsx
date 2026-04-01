@@ -60,10 +60,10 @@ const GamesPage = () => {
         <AdsSection />
       </div>
 
-      <GameSection category="Simulation" />
+      {/* <GameSection category="Simulation" />
       <div className="my-8">
         <AdsSection />
-      </div>
+      </div> */}
 
       <GameSection category="Sports" />
 
